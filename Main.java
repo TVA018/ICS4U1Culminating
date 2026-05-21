@@ -14,9 +14,10 @@ public class Main {
         System.out.println(WARP7.canAutoAim());
 
         // Benchmarking sorting implementations
-        List<Integer> testArray = Arrays.asList(TestArrayGenerator.generateIntArray(100000));
-        
-        Benchmark.timedPrint("Sorting", () -> Algorithms.mergeSorted(testArray, (a, b) -> a - b));
-        Benchmark.timedPrint("Build-in Sorting", () -> testArray.sort((a, b) -> a - b));
+        Integer[] testArray = TestArrayGenerator.generateIntArray(100000);
+        List<Integer> testList = Arrays.asList(testArray);
+
+        Benchmark.timedPrint("Sorting", () -> Algorithms.mergeSorted(testList, (a, b) -> a - b));
+        Benchmark.timedPrint("Build-in Sorting", () -> testList.sort((a, b) -> a - b));
     }
 }
