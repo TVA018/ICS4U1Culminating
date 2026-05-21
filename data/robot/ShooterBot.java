@@ -1,7 +1,7 @@
-package robot;
+package data.robot;
 
-import robot.enums.DriveTrain;
-import robot.enums.Indexer;
+import data.robot.enums.DriveTrain;
+import data.robot.enums.Indexer;
 
 public class ShooterBot extends Robot{
     protected double bps;
@@ -24,27 +24,27 @@ public class ShooterBot extends Robot{
 
     //Accessors
     public double getBps(){
-        return this.bps;
+        return bps;
     }
     
     public boolean hasAdjustableHood(){
-        return this.adjustableHood;
+        return adjustableHood;
     }
 
     public boolean hasFlywheel(){
-        return this.flywheel;
+        return flywheel;
     }
 
     public Indexer getIndexerType(){
-        return this.indexer;
+        return indexer;
     }
 
     public boolean canPass(){
-        return this.passing;
+        return passing;
     }
 
     public boolean canAutoAim(){
-        return this.autoAim;
+        return autoAim;
     }
     
     

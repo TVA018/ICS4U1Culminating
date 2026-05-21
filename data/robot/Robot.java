@@ -1,6 +1,6 @@
-package robot;
+package data.robot;
 
-import robot.enums.DriveTrain;
+import data.robot.enums.DriveTrain;
 
 public abstract class Robot {
     protected DriveTrain driveTrain;
@@ -19,22 +19,22 @@ public abstract class Robot {
 
     // Accessors
     public DriveTrain getDriveTrain(){
-        return this.driveTrain;
+        return driveTrain;
     }
 
     public int getFuelCapacity(){
-        return this.fuelCapacity;
+        return fuelCapacity;
     }
 
     public boolean hasExtendoHopper(){
-        return this.extendoHopper;
+        return extendoHopper;
     }
 
     public boolean canDoTrench(){
-        return this.trench;
+        return trench;
     }
 
     public boolean canDoBump(){
-        return this.bump;
+        return bump;
     }
 }

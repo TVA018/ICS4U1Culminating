@@ -1,9 +1,8 @@
-import robot.TurretBot;
-import robot.enums.DriveTrain;
-import robot.enums.Indexer;
+import data.robot.TurretBot;
+import data.robot.enums.DriveTrain;
+import data.robot.enums.Indexer;
 import java.util.Arrays;
 import java.util.List;
-
 import util.Algorithms;
 import util.Benchmark;
 import util.TestArrayGenerator;

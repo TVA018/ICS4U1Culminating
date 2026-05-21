@@ -1,7 +1,7 @@
-package robot;
+package data.robot;
 
-import robot.enums.DriveTrain;
-import robot.enums.Indexer;
+import data.robot.enums.DriveTrain;
+import data.robot.enums.Indexer;
 
 public class DrumBot extends ShooterBot{
     private double drumBallWidth;
@@ -13,6 +13,6 @@ public class DrumBot extends ShooterBot{
     }
 
     public double getDrumBallWidth() {
-        return this.drumBallWidth;
+        return drumBallWidth;
     }
 }

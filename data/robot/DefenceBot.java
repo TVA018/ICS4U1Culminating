@@ -1,6 +1,6 @@
-package robot;
+package data.robot;
 
-import robot.enums.DriveTrain;
+import data.robot.enums.DriveTrain;
 
 public class DefenceBot extends Robot{
     private boolean shotBlocker;
@@ -12,6 +12,6 @@ public class DefenceBot extends Robot{
 
     //Accessors
     public boolean hasShotBlocker(){
-        return this.shotBlocker;
+        return shotBlocker;
     }
 }

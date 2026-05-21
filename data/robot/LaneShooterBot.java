@@ -1,7 +1,7 @@
-package robot;
+package data.robot;
 
-import robot.enums.DriveTrain;
-import robot.enums.Indexer;
+import data.robot.enums.DriveTrain;
+import data.robot.enums.Indexer;
 
 public class LaneShooterBot extends ShooterBot{
     protected int numLanes;
@@ -13,6 +13,6 @@ public class LaneShooterBot extends ShooterBot{
     }
 
     public int getNumLanes() {
-        return this.numLanes;
+        return numLanes;
     }
 }

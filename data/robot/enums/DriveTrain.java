@@ -1,4 +1,4 @@
-package robot.enums;
+package data.robot.enums;
 
 public enum DriveTrain {
     SWERVE,

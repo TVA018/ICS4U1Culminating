@@ -1,7 +1,7 @@
-package robot;
+package data.robot;
 
-import robot.enums.DriveTrain;
-import robot.enums.Indexer;
+import data.robot.enums.DriveTrain;
+import data.robot.enums.Indexer;
 
 public class TurretBot extends LaneShooterBot{
     private double degreesOfRotation;
@@ -17,11 +17,11 @@ public class TurretBot extends LaneShooterBot{
     }
 
     public double getDegreesOfRotation() {
-        return this.degreesOfRotation;
+        return degreesOfRotation;
     }
 
     public boolean canSOTM(){
-        return this.SOTM;
+        return SOTM;
     }
     
 }
