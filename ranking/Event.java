@@ -1,29 +1,33 @@
 package ranking;
 
-import data.*;
+import java.util.List;
+
+import data.Match;
+import data.Ranking;
+import data.Team;
 
 public class Event implements Rankable{
-    private Match[] matches;
+    private List<Match> matches;
 
-    public Event(Match[] matches){
+    public Event(List<Match> matches){
         this.matches = null; // import from tba
     }
 
-    public Match[] getMatches(){
-        return null;
+    public List<Match> getMatches(){
+        return matches;
     }
 
-    public Team[] getTeams() {
+    public List<Team> getTeams() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Ranking[] getMADRankings(boolean onlyIncludeShooters) {
+    public List<Ranking> getMADRankings(boolean onlyIncludeShooters) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public ranking.Ranking[] getRankings() {
+    public List<Ranking> getRankings() {
         // TODO Auto-generated method stub
         return null;
     }
