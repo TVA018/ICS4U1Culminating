@@ -7,7 +7,6 @@ import data.robot.Robot;
 import ranking.Event;
 
 public class Team {
-
     private String teamName;
     private int teamNum;
     private Robot robot;

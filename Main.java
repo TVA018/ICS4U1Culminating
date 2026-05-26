@@ -1,14 +1,4 @@
-import data.robot.TurretBot;
-import data.robot.enums.DriveTrain;
-import data.robot.enums.Indexer;
-import java.util.Arrays;
-import java.util.List;
-
-import java.util.ArrayList;
-import util.Algorithms;
-import util.Benchmark;
-import util.TBA;
-import util.TestArrayGenerator;
+import util.SimpleJSon;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,6 +19,7 @@ public class Main {
         // }
 
         // Test reading TBA API
-        TBA.getMatches("2026oncmp1");
+        // APIFetcher.getMatches("2026oncmp1");
+        new SimpleJSon("{ \"key\"}");
     }
 }

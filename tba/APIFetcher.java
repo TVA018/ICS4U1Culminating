@@ -1,4 +1,4 @@
-package util;
+package tba;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -6,19 +6,33 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public final class TBA {
-    private TBA() {}
+import data.Match;
+import util.ENV;
+import util.SimpleJSon;
+
+public final class APIFetcher {
+    private APIFetcher() {}
 
     private static final String TBA_ROOT = "https://www.thebluealliance.com/api/v3";
-    private static final String EVENT_BASE_URL = TBA_ROOT + "/event";
 
     private static final String API_KEY = ENV.get("TBA_API_KEY");
 
     public static void getMatches(String eventKey) {
+        String jsonString = fetch("/event/" + eventKey + "/matches");
+
+        ArrayList<Match> matches = new ArrayList<>();
+
+        new SimpleJSon(jsonString);
+    }
+
+    private static String fetch(String endpoint) {
+        String urlStr = TBA_ROOT + endpoint;
+
         try {
-            String urlStr = EVENT_BASE_URL + "/" + eventKey + "/matches";
             URL url = new URI(urlStr).toURL();
 
             System.out.println(urlStr);
@@ -48,9 +62,10 @@ public final class TBA {
 
             if(isError)
                 throw new RuntimeException("Failed to fetch '"+ urlStr + "': " + contentBuilder.toString().stripTrailing());
-            
+
+            return contentBuilder.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
