@@ -1,16 +1,20 @@
 package data;
 
+import java.util.ArrayList;
+
+import data.enums.TeamType;
 import data.robot.Robot;
-import ranking.*;
+import ranking.Event;
 
 public class Team {
 
     private String teamName;
     private int teamNum;
     private Robot robot;
-    private Event[] events;
+    private ArrayList<Event> events = new ArrayList<>();
+    private ArrayList<Match> matches = new ArrayList<>();
 
-    public Team(String teamname, int teamNum, Robot robot, Event[] events, Match[] matches){
+    public Team(String teamname, int teamNum, Robot robot, ArrayList<Event> events){
         this.teamName = teamName;
         this.teamNum = teamNum;
         this.robot = robot;
@@ -29,24 +33,41 @@ public class Team {
         return robot;
     }
 
-    public void displayEvents(){
-        for (Event e : events) {
-            
-            
-            
-            
-            /*System.out.println();
-            for (Match m : e.matches){
-                if(m.redTeams.contains(this)){
-                    System.out.println();
-                }
-                if(m.blueTeams.contains(this)){
-                    System.out.println();
-                }
-            }*/
+    public TeamType teamColour(Match match){
+        if(match.getRedTeams().contains(this)){
+            return TeamType.RED;
+        } else if (match.getBlueTeams().contains(this)){
+            return TeamType.BLUE;
+        } else {
+            return TeamType.NONE;
         }
     }
 
+    public void getEvents(){
+        for (Event teamEvent : events) {
+            for (Match eventMatch : teamEvent.getMatches()){
+                if(!(this.teamColour(eventMatch)==TeamType.NONE)){
+                    matches.add(eventMatch);
+                }
+            }
+        }
+    }
 
-    
+    public double calculateMAD(double factor){
+        double mad = 0.0;
+        if (this.teamColour(matches.get(0))==TeamType.BLUE){
+            mad += matches.get(0).getBlueScore()/3;
+        } else {
+            mad += matches.get(0).getRedScore()/3;
+        }
+        for (Match teamMatch : matches){
+            mad *= factor;
+            if (this.teamColour(teamMatch)==TeamType.BLUE){
+                mad += (teamMatch.getBlueScore()/3)*(1-factor);
+            } else {
+                mad += (teamMatch.getRedScore()/3)*(1-factor);
+            }
+        }
+        return mad;
+    }    
 }

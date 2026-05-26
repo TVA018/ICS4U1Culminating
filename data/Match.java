@@ -1,22 +1,27 @@
 package data;
 
+import java.util.ArrayList;
+
 import data.enums.WinnerType;
 
 public class Match {
-    private Team[] redTeams;
-    private Team[] blueTeams;
+    private ArrayList<Team> redTeams = new ArrayList<>();
+    private ArrayList<Team> blueTeams = new ArrayList<>();
     private int redScore;
     private int blueScore;
 
-    public Match(){
-
+    public Match(ArrayList<Team> redTeams, ArrayList<Team> blueTeams, int redScore, int blueScore){
+        this.redTeams = redTeams;
+        this.blueTeams = blueTeams;
+        this.redScore = redScore;
+        this.blueScore = blueScore;
     }
 
-    public Team[] getRedTeams() {
+    public ArrayList<Team> getRedTeams() {
         return redTeams;
     }
 
-    public Team[] getBlueTeams() {
+    public ArrayList<Team> getBlueTeams() {
         return blueTeams;
     }
 

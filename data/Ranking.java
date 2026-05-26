@@ -4,7 +4,7 @@ public class Ranking {
     public Team team;
     public int points;
 
-    public Ranking(Team team, int points, double MAD){
+    public Ranking(Team team, int points){
         this.team = team;
         this.points = points;
     }
@@ -16,5 +16,4 @@ public class Ranking {
     public int getPoints() {
         return points;
     }
-    
 }
