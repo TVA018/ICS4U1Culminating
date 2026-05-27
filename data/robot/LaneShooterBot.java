@@ -12,6 +12,11 @@ public class LaneShooterBot extends ShooterBot{
         this.numLanes = numLanes;
     }
 
+    // Accessors
+
+    /** 
+     * @return an int of the number of shooting lanes
+     */
     public int getNumLanes() {
         return numLanes;
     }

@@ -22,27 +22,46 @@ public class ShooterBot extends Robot{
         this.autoAim = autoAim;
     }
 
-    //Accessors
+    // Accessors
+
+    /** 
+     * @return a double of the team's bps
+     */
     public double getBps(){
         return bps;
     }
     
+    /** 
+     * @return true if a team has an adjustable hood
+     */
     public boolean hasAdjustableHood(){
         return adjustableHood;
     }
 
+    /** 
+     * @return true if a team has an inertia wheel
+     */
     public boolean hasFlywheel(){
         return flywheel;
     }
 
+    /** 
+     * @return the type of indexer as an enum
+     */
     public Indexer getIndexerType(){
         return indexer;
     }
 
+    /** 
+     * @return true if a team does passing
+     */
     public boolean canPass(){
         return passing;
     }
 
+    /** 
+     * @return true if a team has automatic aiming
+     */
     public boolean canAutoAim(){
         return autoAim;
     }

@@ -10,7 +10,11 @@ public class DefenceBot extends Robot{
         this.shotBlocker = shotBlocker;
     }
 
-    //Accessors
+    // Accessors
+
+    /** 
+     * @return true if a team has a shot blocking mechanism
+     */
     public boolean hasShotBlocker(){
         return shotBlocker;
     }

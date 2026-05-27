@@ -12,6 +12,11 @@ public class DrumBot extends ShooterBot{
         this.drumBallWidth = drumBallWidth;
     }
 
+    // Accessors
+
+    /** 
+     * @return a double of how many balls can fit through a team's shooter at once
+     */
     public double getDrumBallWidth() {
         return drumBallWidth;
     }

@@ -31,10 +31,16 @@ public class Match {
         return blueTeams;
     }
 
+    /** 
+     * @return returns the red score as an int
+     */
     public int getRedScore() {
         return redScore;
     }
 
+    /** 
+     * @return returns the blue score as an int
+     */
     public int getBlueScore() {
         return blueScore;
     }

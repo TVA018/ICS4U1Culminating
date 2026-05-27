@@ -20,18 +20,33 @@ public class Team {
         this.events = events;
     }
 
+    // Accessors
+
+    /** 
+     * @return the team's name
+     */
     public String getName(){
         return teamName;
     }
 
+    /** 
+     * @return the team's official number
+     */
     public int getTeamNum() {
         return teamNum;
     }
 
+    /** 
+     * @return the robot associated with the team
+     */
     public Robot getRobot() {
         return robot;
     }
 
+    /** 
+     * @param match the Match object to check a team's alliance
+     * @return an enum TeamType of the team's colour
+     */
     public TeamType teamColour(Match match){
         if(match.getRedTeams().contains(this)){
             return TeamType.RED;
@@ -42,7 +57,7 @@ public class Team {
         }
     }
 
-    public void getEvents(){
+    public void populateEvents(){
         for (Event teamEvent : events) {
             for (Match eventMatch : teamEvent.getMatches()){
                 if(!(this.teamColour(eventMatch)==TeamType.NONE)){
@@ -52,6 +67,10 @@ public class Team {
         }
     }
 
+    /** 
+     * @param factor Bias toward a team's previous events from 0-1
+     * @return a double of the team's MAD
+     */
     public double calculateMAD(double factor){
         double mad = 0.0;
         if (this.teamColour(matches.get(0))==TeamType.BLUE){

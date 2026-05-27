@@ -18,22 +18,38 @@ public abstract class Robot {
     }
 
     // Accessors
+
+    /** 
+     * @return Drivetrain type as an enum
+     */
     public DriveTrain getDriveTrain(){
         return driveTrain;
     }
 
+    /** 
+     * @return int of total fuel capacity
+     */
     public int getFuelCapacity(){
         return fuelCapacity;
     }
 
+    /** 
+     * @return true if a team has an extendable hopper mechanism
+     */
     public boolean hasExtendoHopper(){
         return extendoHopper;
     }
 
+    /** 
+     * @return true if a team can go under the trench
+     */
     public boolean canDoTrench(){
         return trench;
     }
 
+    /** 
+     * @return true if a team can traverse the bump
+     */
     public boolean canDoBump(){
         return bump;
     }
