@@ -1,21 +1,17 @@
 package tba;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 import data.Match;
+import data.enums.WinningAlliance;
 import util.ENV;
-import util.PrettyPrint;
 import util.SimpleJSon;
 
 public final class APIFetcher {
@@ -25,14 +21,51 @@ public final class APIFetcher {
 
     private static final String API_KEY = ENV.get("TBA_API_KEY");
 
-    public static void getMatches(String eventKey) {
-        String jsonString = fetch("/event/" + eventKey + "/matches");
+    @SuppressWarnings("unchecked")
+    public static List<Match> getMatches(String eventKey) {
+        String jsonString = fetch("/event/" + eventKey + "/matches/simple");
 
         ArrayList<Match> matches = new ArrayList<>();
 
-        Object json = SimpleJSon.parse(jsonString);
+        var json = (List<HashMap<String, Object>>) SimpleJSon.parse(jsonString);
 
-        PrettyPrint.pprint(json);
+        for(var matchData : json) {
+            ArrayList<Integer> redTeams = new ArrayList<>(3);
+            ArrayList<Integer> blueTeams = new ArrayList<>(3);
+            String tbaWinnerStr = (String) matchData.get("winning_alliance");
+
+            var alliances = (HashMap<String, HashMap<String, Object>>) matchData.get("alliances");
+
+            var redAlliance = alliances.get("red");
+            var blueAlliance = alliances.get("blue");
+
+            var redTeamKeys = (List<String>) redAlliance.get("team_keys");
+            var blueTeamKeys = (List<String>) redAlliance.get("team_keys");
+
+            for(String teamKey : redTeamKeys) {
+                redTeams.add(Conversions.teamNumberFromKey(teamKey));
+            }
+            
+            for(String teamKey : blueTeamKeys) {
+                blueTeams.add(Conversions.teamNumberFromKey(teamKey));
+            }
+
+            Match match = new Match(
+                (int) matchData.get("match_number"),
+                matchData.get("comp_level").equals("qm"),
+                redTeams,
+                blueTeams,
+                (int) redAlliance.get("score"),
+                (int) blueAlliance.get("score"),
+                tbaWinnerStr.equals("red") ? WinningAlliance.RED : 
+                (tbaWinnerStr.equals("blue") ? WinningAlliance.BLUE : 
+                WinningAlliance.TIE)
+            );
+
+            matches.add(match);
+        }
+
+        return matches;
     }
 
     private static String fetch(String endpoint) {

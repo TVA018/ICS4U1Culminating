@@ -1,6 +1,6 @@
 package data.enums;
 
-public enum WinnerType{
+public enum WinningAlliance{
     RED,
     BLUE,
     TIE

@@ -2,26 +2,32 @@ package data;
 
 import java.util.ArrayList;
 
-import data.enums.WinnerType;
+import data.enums.WinningAlliance;
 
 public class Match {
-    private ArrayList<Team> redTeams = new ArrayList<>();
-    private ArrayList<Team> blueTeams = new ArrayList<>();
-    private int redScore;
-    private int blueScore;
+    private final int matchNumber;
+    private final ArrayList<Integer> redTeams;
+    private final ArrayList<Integer> blueTeams;
+    private final int redScore;
+    private final int blueScore;
+    private final boolean qualifier;
+    private final WinningAlliance winner;
 
-    public Match(ArrayList<Team> redTeams, ArrayList<Team> blueTeams, int redScore, int blueScore){
+    public Match(int matchNumber, boolean isQualifier, ArrayList<Integer> redTeams, ArrayList<Integer> blueTeams, int redScore, int blueScore, WinningAlliance winner){
+        this.matchNumber = matchNumber;
         this.redTeams = redTeams;
         this.blueTeams = blueTeams;
         this.redScore = redScore;
         this.blueScore = blueScore;
+        this.winner = winner;
+        this.qualifier = isQualifier;
     }
 
-    public ArrayList<Team> getRedTeams() {
+    public ArrayList<Integer> getRedTeams() {
         return redTeams;
     }
 
-    public ArrayList<Team> getBlueTeams() {
+    public ArrayList<Integer> getBlueTeams() {
         return blueTeams;
     }
 
@@ -33,13 +39,11 @@ public class Match {
         return blueScore;
     }
 
-    public WinnerType getWinner(){
-        if (blueScore > redScore){
-            return WinnerType.BLUE;
-        } else if (redScore > blueScore) {
-            return WinnerType.RED;
-        } else {
-            return WinnerType.TIE;
-        }
+    public boolean isQualifier() {
+        return qualifier;
+    }
+
+    public WinningAlliance getWinner(){
+        return winner;
     }
 }
