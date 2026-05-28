@@ -20,6 +20,7 @@ public class Main {
         // }
 
         // Test reading TBA API
-        APIFetcher.getMatches("2026oncmp1");
+        // APIFetcher.getMatches("2026oncmp1");
+        APIFetcher.generateTeamsList("res/teams.csv");
     }
 }

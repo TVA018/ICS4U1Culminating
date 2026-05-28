@@ -1,5 +1,8 @@
 package tba;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -20,6 +23,27 @@ public final class APIFetcher {
     private static final String TBA_ROOT = "https://www.thebluealliance.com/api/v3";
 
     private static final String API_KEY = ENV.get("TBA_API_KEY");
+
+    @SuppressWarnings("unchecked")
+    public static void generateTeamsList(String filePath) {
+        try(BufferedWriter fileWriter = new BufferedWriter(new FileWriter(new File(filePath)))) {
+            for(int pageNumber = 0; pageNumber < 100; pageNumber++) {
+                String jsonString = fetch("/teams/2026/" + String.valueOf(pageNumber) + "/keys");
+                // System.out.println(jsonString);
+                // System.out.println(jsonString);
+
+                var json = (List<String>) SimpleJSon.parse(jsonString);
+
+                if(json.isEmpty()) break;
+
+                for(var teamKey : json) {
+                    fileWriter.write(teamKey.substring(3) + "\n");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static List<Match> getMatches(String eventKey) {
