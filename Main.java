@@ -1,3 +1,4 @@
+import tba.APIFetcher;
 import util.SimpleJSon;
 
 public class Main {
