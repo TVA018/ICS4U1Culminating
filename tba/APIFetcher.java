@@ -1,5 +1,8 @@
 package tba;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -12,6 +15,7 @@ import java.util.Scanner;
 
 import data.Match;
 import util.ENV;
+import util.PrettyPrint;
 import util.SimpleJSon;
 
 public final class APIFetcher {
@@ -26,7 +30,9 @@ public final class APIFetcher {
 
         ArrayList<Match> matches = new ArrayList<>();
 
-        new SimpleJSon(jsonString);
+        Object json = SimpleJSon.parse(jsonString);
+
+        PrettyPrint.pprint(json);
     }
 
     private static String fetch(String endpoint) {

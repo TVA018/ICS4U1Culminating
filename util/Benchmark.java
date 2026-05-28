@@ -1,7 +1,11 @@
 package util;
 
+import java.util.HashMap;
+
 public final class Benchmark {
     private Benchmark() {}
+
+    private static final HashMap<String, Long> runningStartTimes = new HashMap<>();
 
     /** Unit for Time */
     public enum TimeUnit {
@@ -17,6 +21,10 @@ public final class Benchmark {
             this.symbol = symbol;
             this.multiplier = multiplier;
         }
+    }
+
+    public static String nanoTimeTo(long nanoTime, TimeUnit timeUnit) {
+        return String.format("%s %s", (double) nanoTime / timeUnit.multiplier, timeUnit.symbol);
     }
 
     /**
@@ -41,7 +49,7 @@ public final class Benchmark {
         long timeElapsed = time(target);
         
         TerminalTextFormatter.println(
-            String.format("Time taken to run %s: %s %s", identifier, (double) timeElapsed / timeUnit.multiplier, timeUnit.symbol), 
+            String.format("Time taken to run %s: %s", identifier, nanoTimeTo(timeElapsed, timeUnit)), 
             TerminalTextFormatter.ANSIFlag.YELLOW_TEXT, 
             TerminalTextFormatter.ANSIFlag.ITALIC
         );
@@ -55,5 +63,29 @@ public final class Benchmark {
      */
     public static long timedPrint(String identifier, Runnable target) {
         return timedPrint(identifier, target, TimeUnit.MILLISECONDS);
+    }
+
+    public static void startTimer(String identifier) {
+        runningStartTimes.put(identifier, System.nanoTime());
+    }
+
+    public static void endTimer(String identifier, TimeUnit timeUnit) {
+        Long start = runningStartTimes.get(identifier);
+        if(start == null) {
+            System.err.println("Could not find a start time for " + identifier);
+            return;
+        }
+
+        long nanoElapsed = System.nanoTime() - start;
+
+        TerminalTextFormatter.println(
+            String.format("Time taken to run %s: %s", identifier, nanoTimeTo(nanoElapsed, timeUnit)), 
+            TerminalTextFormatter.ANSIFlag.YELLOW_TEXT, 
+            TerminalTextFormatter.ANSIFlag.ITALIC
+        );
+    }
+
+    public static void endTimer(String identifier) {
+        endTimer(identifier, TimeUnit.MILLISECONDS);
     }
 }
