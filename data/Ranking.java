@@ -4,7 +4,7 @@ public class Ranking {
     public Team team;
     public double points;
 
-    public Ranking(Team team, int points){
+    public Ranking(Team team, double points){
         this.team = team;
         this.points = points;
     }

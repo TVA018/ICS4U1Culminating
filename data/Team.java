@@ -7,17 +7,16 @@ import data.robot.Robot;
 import ranking.Event;
 
 public class Team {
-    private String teamName;
-    private int teamNum;
-    private Robot robot;
-    private ArrayList<Event> events = new ArrayList<>();
-    private ArrayList<Match> matches = new ArrayList<>();
+    private final String teamName;
+    private final int teamNum;
+    private final Robot robot;
+    private final ArrayList<Event> events = new ArrayList<>();
+    private final ArrayList<Match> matches = new ArrayList<>();
 
-    public Team(String teamname, int teamNum, Robot robot, ArrayList<Event> events){
+    public Team(String teamName, int teamNum, Robot robot){
         this.teamName = teamName;
         this.teamNum = teamNum;
         this.robot = robot;
-        this.events = events;
     }
 
     // Accessors
@@ -48,21 +47,21 @@ public class Team {
      * @return an enum TeamType of the team's colour
      */
     public TeamType teamColour(Match match){
-        if(match.getRedTeams().contains(this)){
+        if(match.getRedTeams().contains(this.teamNum)){
             return TeamType.RED;
-        } else if (match.getBlueTeams().contains(this)){
+        } else if (match.getBlueTeams().contains(this.teamNum)){
             return TeamType.BLUE;
         } else {
             return TeamType.NONE;
         }
     }
 
-    public void populateEvents(){
-        for (Event teamEvent : events) {
-            for (Match eventMatch : teamEvent.getMatches()){
-                if(!(this.teamColour(eventMatch)==TeamType.NONE)){
-                    matches.add(eventMatch);
-                }
+    public void addEvent(Event event){
+        this.events.add(event);
+
+        for (Match eventMatch : event.getMatches()){
+            if(!(this.teamColour(eventMatch)==TeamType.NONE)){
+                matches.add(eventMatch);
             }
         }
     }

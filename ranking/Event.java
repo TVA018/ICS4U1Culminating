@@ -1,5 +1,6 @@
 package ranking;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,42 @@ import data.Ranking;
 import data.Team;
 import data.robot.DefenceBot;
 import util.Algorithms;
+import util.CSVParser;
 
+/** Represents an event */
 public class Event implements Rankable{
-    private List<Match> matches;
+    private final String name;
+    private Date startDate;
+    private List<Match> matches; // The matches in this event
+    private List<Team> teams = new ArrayList<>();
 
-    public Event(List<Match> matches){
-        this.matches = null; // import from tba
+    public Event(String name, Date startDate, List<Match> matches, List<Integer> teamNumbers){
+        this.name = name;
+        this.startDate = startDate;
+        this.matches = matches;
+
+        int teamObjectListIndex = 0;
+
+        List<Team> allTeamsObjects = CSVParser.getTeams();
+
+        for (int teamNumber: teamNumbers) {
+            Team currentTeam = allTeamsObjects.get(teamObjectListIndex);
+
+            while (currentTeam.getTeamNum() != teamNumber) {
+                teamObjectListIndex++;
+
+                if(teamObjectListIndex > allTeamsObjects.size()) throw new RuntimeException("Failed to find team " + teamNumber);
+
+                currentTeam = allTeamsObjects.get(teamObjectListIndex);
+            }
+
+            teams.add(currentTeam);
+            teamObjectListIndex++;
+        }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<Match> getMatches(){
@@ -21,8 +52,11 @@ public class Event implements Rankable{
     }
 
     public List<Team> getTeams() {
-        // TODO Implement TBA
-        return null;
+        return teams;
+    }
+
+    public Date getStartDate() {
+        return startDate;
     }
 
     /** 
@@ -30,18 +64,25 @@ public class Event implements Rankable{
      * @return a sorted ArrayList of the rankings from highest MAD descending
      */
     @Override
-    public ArrayList getMADRankings(boolean onlyIncludeShooters) {
-        ArrayList<Team> madRanks = new ArrayList<>();
+    public ArrayList<Ranking> getMADRankings(boolean onlyIncludeShooters) {
+        List<Team> allTeams = getTeams();
+        List<Team> validTeams;
+
+
         if(onlyIncludeShooters){
-            for (Team team : getTeams()){ // TODO make proper list
-                if(!(team.getRobot() instanceof DefenceBot)){
-                    madRanks.add(team);
-                }
-            }
+            validTeams = Algorithms.filter(allTeams, team -> (team.getRobot() instanceof DefenceBot));
         } else {
-            madRanks.addAll(getTeams());
+            validTeams = allTeams;
         }
-        Algorithms.mergeSort(madRanks, null); // TODO add comparator
+        
+        ArrayList<Ranking> madRanks = new ArrayList<>(validTeams.size());
+
+        for(Team team : validTeams) {
+            madRanks.add(new Ranking(team, team.calculateMAD(0.96)));
+        }
+
+        Algorithms.mergeSort(madRanks, (ranking1, ranking2) -> (int) (ranking2.points - ranking1.points));
+
         return madRanks;
     }
 
