@@ -16,8 +16,11 @@ public class District implements Rankable{
 
     @Override
     public List<Team> getTeams() {
-        // TODO import from TBA
-        throw new UnsupportedOperationException("Unimplemented method 'getTeams'");
+        ArrayList<Team> teams = new ArrayList<>();
+
+        for(Event event : events) {
+            List<Team> eventTeams = event.getTeams();
+        }
     }
 
     /** 

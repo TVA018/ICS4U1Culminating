@@ -3,13 +3,15 @@ import tba.APIFetcher;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        var events = APIFetcher.getEvents("2026ont");
+        var event = APIFetcher.getEvent("2026oncmp1");
 
-        for(var event : events) {
-            System.out.println(event.getName());
+        System.out.printf("MAD Rankings for %s:\n", event.getName());
+        System.out.println("Rank: Team Number [MAD]");
 
-            for(var team : event.getTeams())
-                System.out.printf("- Team %s: %s\n", team.getTeamNum(), team.getName());
+        int rank = 1;
+        for(var ranking : event.getMADRankings(false)) {
+            System.out.printf("%s: %s [%s]\n", rank, ranking.team.getTeamNum(), ranking.points);
+            rank++;
         }
     }
 }

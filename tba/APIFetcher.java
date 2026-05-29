@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import data.Match;
+import data.Team;
 import data.enums.WinningAlliance;
 import ranking.Event;
 import util.Algorithms;
 import util.CSVParser;
+import util.ComparatorFactory;
 import util.ENV;
 import util.SimpleJSon;
 
@@ -111,6 +113,8 @@ public final class APIFetcher {
             matches.add(match);
         }
 
+        Algorithms.mergeSort(matches, (match1, match2) -> match1.getMatchNumber() - match2.getMatchNumber());
+
         return matches;
     }
 
@@ -125,7 +129,20 @@ public final class APIFetcher {
 
         Date date = Date.valueOf(startDateStr);
 
-        return new Event(eventName, date, matches, teamNumbers);
+        Event event = new Event(eventName, date, matches, teamNumbers);
+
+        for(int teamNumber : teamNumbers) {
+            var teamOpt = Algorithms.binarySearch(CSVParser.getTeams(), ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum));
+
+            if(teamOpt.isEmpty()) {
+                System.err.printf("Could not find team %s\n", teamNumber);
+                continue;
+            }
+
+            teamOpt.get().addEvent(event);
+        }
+
+        return event;
     }
 
     @SuppressWarnings("unchecked")
@@ -199,10 +216,6 @@ public final class APIFetcher {
                     "Error (" + Integer.valueOf(responseCode) + ") '"+ 
                     urlStr + "': " + contentBuilder.toString().stripTrailing()
                 );
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("temp.json")))) {
-                writer.write(contentBuilder.toString());
-            }
 
             // Return the JSon
             return SimpleJSon.parse(contentBuilder.toString());

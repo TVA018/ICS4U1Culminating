@@ -23,6 +23,10 @@ public class Match {
         this.qualifier = isQualifier;
     }
 
+    public int getMatchNumber() {
+        return matchNumber;
+    }
+
     public ArrayList<Integer> getRedTeams() {
         return redTeams;
     }

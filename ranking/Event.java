@@ -78,7 +78,7 @@ public class Event implements Rankable{
         ArrayList<Ranking> madRanks = new ArrayList<>(validTeams.size());
 
         for(Team team : validTeams) {
-            madRanks.add(new Ranking(team, team.calculateMAD(0.96)));
+            madRanks.add(new Ranking(team, team.calculateMAD(0.9)));
         }
 
         Algorithms.mergeSort(madRanks, (ranking1, ranking2) -> (int) (ranking2.points - ranking1.points));

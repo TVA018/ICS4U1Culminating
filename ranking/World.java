@@ -21,8 +21,8 @@ public class World implements Rankable{
      * @return a sorted ArrayList of the rankings from highest MAD descending
      */
     @Override
-    public ArrayList getMADRankings(boolean onlyIncludeShooters) {
-        ArrayList<Team> madRanks = new ArrayList<>();
+    public ArrayList<Ranking> getMADRankings(boolean onlyIncludeShooters) {
+        ArrayList<Ranking> madRanks = new ArrayList<>();
         if(onlyIncludeShooters){
             for (Team team : getTeams()){ // TODO make proper list
                 if(!(team.getRobot() instanceof DefenceBot)){

@@ -1,10 +1,12 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import data.enums.TeamType;
 import data.robot.Robot;
 import ranking.Event;
+import util.Algorithms;
 
 public class Team {
     private final String teamName;
@@ -71,13 +73,16 @@ public class Team {
      * @return a double of the team's MAD
      */
     public double calculateMAD(double factor){
+        List<Match> validMatches = Algorithms.filter(matches, Match::isQualifier);
+
         double mad = 0.0;
-        if (this.teamColour(matches.get(0))==TeamType.BLUE){
-            mad += matches.get(0).getBlueScore()/3;
+        if (this.teamColour(validMatches.get(0))==TeamType.BLUE){
+            mad += validMatches.get(0).getBlueScore()/3;
         } else {
-            mad += matches.get(0).getRedScore()/3;
+            mad += validMatches.get(0).getRedScore()/3;
         }
-        for (Match teamMatch : matches){
+        
+        for (Match teamMatch : validMatches){
             mad *= factor;
             if (this.teamColour(teamMatch)==TeamType.BLUE){
                 mad += (teamMatch.getBlueScore()/3)*(1-factor);
