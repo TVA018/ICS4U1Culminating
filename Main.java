@@ -13,19 +13,18 @@ public class Main {
         System.out.printf("MAD Rankings for %s:\n", event.getName());
         System.out.println("Rank: Team Number [MAD]");
 
-        // Optimal MAD factor: 0.90
         var match1 = event.getMatches().get(0);
 
         System.out.println("RED");
 
         for(Team team : match1.getRedTeams()) {
-            System.out.printf("%s [%s]\n", team.getTeamNum(), team.calculateMAD(0.90));
+            System.out.printf("%s [%s]\n", team.getTeamNum(), team.calculateMAD(Constants.MAD_FACTOR));
         }
         
         System.out.println("BLUE");
 
         for(Team team : match1.getBlueTeams()) {
-            System.out.printf("%s [%s]\n", team.getTeamNum(), team.calculateMAD(0.90));
+            System.out.printf("%s [%s]\n", team.getTeamNum(), team.calculateMAD(Constants.MAD_FACTOR));
         }
     }
 }
