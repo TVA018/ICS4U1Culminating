@@ -8,6 +8,6 @@ import data.Team;
 
 public interface Rankable {
     public List<Team> getTeams();
-    public ArrayList<Ranking> getMADRankings(boolean onlyIncludeShooters);
+    public ArrayList<Ranking> getMADRankings(double factor, boolean onlyIncludeShooters);
     public List<Ranking> getRankings();
 }

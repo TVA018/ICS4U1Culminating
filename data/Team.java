@@ -49,15 +49,19 @@ public class Team {
      * @return an enum TeamType of the team's colour
      */
     public TeamType teamColour(Match match){
-        if(match.getRedTeams().contains(this.teamNum)){
+        if(match.getRedTeams().contains(this)){
             return TeamType.RED;
-        } else if (match.getBlueTeams().contains(this.teamNum)){
+        } else if (match.getBlueTeams().contains(this)){
             return TeamType.BLUE;
         } else {
             return TeamType.NONE;
         }
     }
 
+    /**
+     * Adds an event to this team
+     * @param event The event to add
+     */
     public void addEvent(Event event){
         this.events.add(event);
 
@@ -75,21 +79,38 @@ public class Team {
     public double calculateMAD(double factor){
         List<Match> validMatches = Algorithms.filter(matches, Match::isQualifier);
 
-        double mad = 0.0;
+        double mad;
         if (this.teamColour(validMatches.get(0))==TeamType.BLUE){
-            mad += validMatches.get(0).getBlueScore()/3;
+            mad = validMatches.get(0).getMeanBlueScore();
         } else {
-            mad += validMatches.get(0).getRedScore()/3;
+            mad = validMatches.get(0).getMeanRedScore();
         }
         
         for (Match teamMatch : validMatches){
             mad *= factor;
             if (this.teamColour(teamMatch)==TeamType.BLUE){
-                mad += (teamMatch.getBlueScore()/3)*(1-factor);
+                mad += teamMatch.getMeanBlueScore()*(1-factor);
             } else {
-                mad += (teamMatch.getRedScore()/3)*(1-factor);
+                mad += teamMatch.getMeanRedScore()*(1-factor);
             }
         }
-        return mad;
+
+        return mad * 2; // Multiply by 2 because it seems to give a more accurate value for expected score
     }    
+
+    /**
+     * Calculates the average (mean) points an alliance this team is on will score
+     * @return The mean points
+     */
+    public double calculateAverageMatchPoints() {
+        List<Match> validMatches = Algorithms.filter(matches, Match::isQualifier);
+
+        int totalPoints = 0;
+
+        for(Match match : validMatches) {
+            totalPoints += this.teamColour(match) == TeamType.BLUE ? match.getBlueScore() : match.getRedScore();
+        }
+
+        return ((double) totalPoints) / validMatches.size();
+    }
 }

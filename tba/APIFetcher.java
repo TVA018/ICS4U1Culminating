@@ -73,6 +73,8 @@ public final class APIFetcher {
 
         ArrayList<Match> matches = new ArrayList<>();
 
+        Algorithms.mergeSort(json, (match1, match2) -> (int) match1.get("actual_time") - (int) match2.get("actual_time"));
+
         for(var matchData : json) { // Parse through each match
             // List of team numbers
             ArrayList<Integer> redTeams = new ArrayList<>(3);
@@ -87,7 +89,7 @@ public final class APIFetcher {
 
             // Grab the team keys and add them to the list of team numbers
             var redTeamKeys = (List<String>) redAlliance.get("team_keys");
-            var blueTeamKeys = (List<String>) redAlliance.get("team_keys");
+            var blueTeamKeys = (List<String>) blueAlliance.get("team_keys");
 
             for(String teamKey : redTeamKeys) {
                 redTeams.add(Conversions.teamNumberFromKey(teamKey));
@@ -112,8 +114,6 @@ public final class APIFetcher {
 
             matches.add(match);
         }
-
-        Algorithms.mergeSort(matches, (match1, match2) -> match1.getMatchNumber() - match2.getMatchNumber());
 
         return matches;
     }

@@ -1,8 +1,8 @@
 package data;
 
 public class Ranking {
-    public Team team;
-    public double points;
+    private final Team team;
+    private final double points;
 
     public Ranking(Team team, double points){
         this.team = team;

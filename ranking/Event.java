@@ -64,7 +64,7 @@ public class Event implements Rankable{
      * @return a sorted ArrayList of the rankings from highest MAD descending
      */
     @Override
-    public ArrayList<Ranking> getMADRankings(boolean onlyIncludeShooters) {
+    public ArrayList<Ranking> getMADRankings(double factor, boolean onlyIncludeShooters) {
         List<Team> allTeams = getTeams();
         List<Team> validTeams;
 
@@ -78,10 +78,10 @@ public class Event implements Rankable{
         ArrayList<Ranking> madRanks = new ArrayList<>(validTeams.size());
 
         for(Team team : validTeams) {
-            madRanks.add(new Ranking(team, team.calculateMAD(0.9)));
+            madRanks.add(new Ranking(team, team.calculateMAD(factor)));
         }
 
-        Algorithms.mergeSort(madRanks, (ranking1, ranking2) -> (int) (ranking2.points - ranking1.points));
+        Algorithms.mergeSort(madRanks, (ranking1, ranking2) -> (int) ((ranking2.getPoints() - ranking1.getPoints()) * 1000));
 
         return madRanks;
     }
