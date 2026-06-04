@@ -2,23 +2,29 @@ package ranking;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import data.Match;
 import data.Ranking;
 import data.Team;
-import data.robot.DefenceBot;
+import tba.Conversions;
 import util.Algorithms;
 import util.CSVParser;
+import util.ComparatorFactory;
 
 /** Represents an event */
-public class Event implements Rankable{
+public class Event extends Rankable {
     private final String name;
-    private Date startDate;
-    private List<Match> matches; // The matches in this event
-    private List<Team> teams = new ArrayList<>();
+    private final Date startDate;
+    private final List<Match> matches; // The matches in this event
 
-    public Event(String name, Date startDate, List<Match> matches, List<Integer> teamNumbers){
+    /** {teamNumber: rankingScore} */
+    private final ArrayList<Ranking> rankingScores = new ArrayList<>();
+
+    @SuppressWarnings("unchecked")
+    public Event(String name, Date startDate, List<Match> matches, List<Integer> teamNumbers, List<HashMap<String, Object>> rankingsList){
         this.name = name;
         this.startDate = startDate;
         this.matches = matches;
@@ -27,6 +33,8 @@ public class Event implements Rankable{
 
         List<Team> allTeamsObjects = CSVParser.getTeams();
 
+        // Iterate over the List of team numbers and List of Team objects side-by-side and 
+        // add the Team object if the team number intersect
         for (int teamNumber: teamNumbers) {
             Team currentTeam = allTeamsObjects.get(teamObjectListIndex);
 
@@ -41,6 +49,15 @@ public class Event implements Rankable{
             teams.add(currentTeam);
             teamObjectListIndex++;
         }
+
+        // Load rankings
+        for(var teamRankingScoreInfo : rankingsList) {
+            int teamNumber = Conversions.teamNumberFromKey((String) teamRankingScoreInfo.get("team_key"));
+            Team team = Algorithms.binarySearch(teams, ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum)).get();
+            double rankingScore = ((List<Double>) teamRankingScoreInfo.get("sort_orders")).get(0);
+
+            rankingScores.add(new Ranking(team, rankingScore));
+        }
     }
 
     public String getName() {
@@ -51,44 +68,12 @@ public class Event implements Rankable{
         return matches;
     }
 
-    public List<Team> getTeams() {
-        return teams;
-    }
-
     public Date getStartDate() {
         return startDate;
     }
 
-    /** 
-     * @param onlyIncludeShooters option to exclude bias from teams who do not score
-     * @return a sorted ArrayList of the rankings from highest MAD descending
-     */
     @Override
-    public ArrayList<Ranking> getMADRankings(double factor, boolean onlyIncludeShooters) {
-        List<Team> allTeams = getTeams();
-        List<Team> validTeams;
-
-
-        if(onlyIncludeShooters){
-            validTeams = Algorithms.filter(allTeams, team -> (team.getRobot() instanceof DefenceBot));
-        } else {
-            validTeams = allTeams;
-        }
-        
-        ArrayList<Ranking> madRanks = new ArrayList<>(validTeams.size());
-
-        for(Team team : validTeams) {
-            madRanks.add(new Ranking(team, team.calculateMAD(factor)));
-        }
-
-        Algorithms.mergeSort(madRanks, (ranking1, ranking2) -> (int) ((ranking2.getPoints() - ranking1.getPoints()) * 1000));
-
-        return madRanks;
-    }
-
     public List<Ranking> getRankings() {
-        // TODO Implement TBA
-        return null;
+        return rankingScores;
     }
-    
 }

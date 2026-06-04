@@ -15,7 +15,6 @@ import data.robot.DrumBot;
 import data.robot.LaneShooterBot;
 import data.robot.PlaceholderBot;
 import data.robot.Robot;
-import data.robot.ShooterBot;
 import data.robot.TurretBot;
 import data.robot.enums.DriveTrain;
 import data.robot.enums.Indexer;

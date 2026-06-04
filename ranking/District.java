@@ -4,43 +4,56 @@ import java.util.ArrayList;
 import java.util.List;
 import data.Ranking;
 import data.Team;
-import data.robot.*;
-import util.Algorithms;
 
-public class District implements Rankable{
+public class District extends Rankable {
     private List<Event> events;
 
     public District(List<Event> events){
         this.events = events;
-    }
+        
+        ArrayList<Integer> eventTeamIndices = new ArrayList<>(events.size());
 
-    @Override
-    public List<Team> getTeams() {
-        ArrayList<Team> teams = new ArrayList<>();
-
-        for(Event event : events) {
-            List<Team> eventTeams = event.getTeams();
+        for(int i = 0; i < events.size(); i++) {
+            eventTeamIndices.add(0);
         }
-    }
+        
+        int previousTeamNumber = -1; // Impossible value
 
-    /** 
-     * @param onlyIncludeShooters option to exclude bias from teams who do not score
-     * @return a sorted ArrayList of the rankings from highest MAD descending
-     */
-    @Override
-    public ArrayList getMADRankings(boolean onlyIncludeShooters) {
-        ArrayList<Team> madRanks = new ArrayList<>();
-        if(onlyIncludeShooters){
-            for (Team team : getTeams()){ // TODO make proper list
-                if(!(team.getRobot() instanceof DefenceBot)){
-                    madRanks.add(team);
+        while (true) {
+            int lowestTeamEventIndex = 0;
+            int lowestTeamNumber = 25000; // Impossible value
+
+            boolean allListsHaveBeenSearched = true;
+
+            // Grab the lowest numbered team by grabbing the lowest numbered team from each event
+            // The event team numbers are sorted by number in ascending order, so 
+            for(int eventIndex = 0; eventIndex < eventTeamIndices.size(); eventIndex++) {
+                Event event = events.get(eventIndex);
+                int teamIndex = eventTeamIndices.get(eventIndex);
+
+                if(teamIndex >= event.getTeams().size()) continue;
+
+                allListsHaveBeenSearched = false;
+
+                Team team = event.getTeams().get(teamIndex);
+                int currentTeamNumber = team.getTeamNum();
+
+                if(currentTeamNumber < lowestTeamNumber) {
+                    lowestTeamNumber = currentTeamNumber;
+                    lowestTeamEventIndex = eventIndex;
                 }
             }
-        } else {
-            madRanks.addAll(getTeams());
+
+            if(allListsHaveBeenSearched) break;
+
+            if(lowestTeamNumber != previousTeamNumber) {
+                previousTeamNumber = lowestTeamNumber;
+                Team lowestTeam = events.get(lowestTeamEventIndex).getTeams().get(eventTeamIndices.get(lowestTeamEventIndex));
+                teams.add(lowestTeam);
+            }
+
+            eventTeamIndices.set(lowestTeamEventIndex, eventTeamIndices.get(lowestTeamEventIndex) + 1);
         }
-        Algorithms.mergeSort(madRanks, null); // TODO add comparator
-        return madRanks;
     }
     
     @Override

@@ -97,7 +97,7 @@ public final class Algorithms {
      *  <li>positive if X comes logically after the target value</li>
      *  <li>0 if X matches the target value</li>
      * </ul>
-     * @return Optional.empty if the item couldn't be found, the item otherwise if it is found
+     * @return Optional.empty if the item couldn't be found, Optional.of(the item) if it was found
      */
     public static <T> Optional<T> binarySearch(List<T> list, Function<T, Integer> comparator) {
         int lowerBound = 0; // inclusive
@@ -118,6 +118,21 @@ public final class Algorithms {
             } else { // Target item found
                 return Optional.of(middleItem);
             }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Performs a linear search on a List
+     * @param <T> The type of each item
+     * @param list The list of items to search
+     * @param predicate A function that takes in an item, and returns true if the item is the one the user is looking for
+     * @return Optional.empty if the item could not be found, Optional.of(the item) if it was found.
+     */
+    public static <T> Optional<T> linearSearch(List<T> list, Predicate<T> predicate) {
+        for(T element : list) {
+            if(predicate.test(element)) return Optional.of(element);
         }
 
         return Optional.empty();

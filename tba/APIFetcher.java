@@ -16,12 +16,15 @@ import java.util.Scanner;
 import data.Match;
 import data.Team;
 import data.enums.WinningAlliance;
+import ranking.District;
 import ranking.Event;
 import util.Algorithms;
 import util.CSVParser;
 import util.ComparatorFactory;
 import util.ENV;
 import util.SimpleJSon;
+import util.TerminalTextFormatter;
+import util.TerminalTextFormatter.ANSIFlag;
 
 public final class APIFetcher {
     private APIFetcher() {}
@@ -69,6 +72,7 @@ public final class APIFetcher {
      */
     @SuppressWarnings("unchecked")
     public static List<Match> getMatches(String eventKey) {
+        TerminalTextFormatter.println("Loading matches from event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         var json = (List<HashMap<String, Object>>) fetch("/event/" + eventKey + "/matches/simple");
 
         ArrayList<Match> matches = new ArrayList<>();
@@ -120,16 +124,24 @@ public final class APIFetcher {
 
     @SuppressWarnings("unchecked")
     public static Event getEvent(String eventKey) {
+        TerminalTextFormatter.println("Loading event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         var matches = getMatches(eventKey);
         var teamNumbers = getEventTeamNumbers(eventKey);
 
+        TerminalTextFormatter.println("Loading information of event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         var eventInfo = (HashMap<String, Object>) fetch("/event/" + eventKey + "/simple");
+        
+        TerminalTextFormatter.println("Loading rankings of event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
+        var eventRankingInfo = (HashMap<String, Object>) fetch("/event/" + eventKey + "/rankings");
+        var rankings = (List<HashMap<String, Object>>) eventRankingInfo.get("rankings");
+
         var eventName = (String) eventInfo.get("name");
         var startDateStr = (String) eventInfo.get("start_date");
 
         Date date = Date.valueOf(startDateStr);
 
-        Event event = new Event(eventName, date, matches, teamNumbers);
+        TerminalTextFormatter.println("Creating Event object...", ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
+        Event event = new Event(eventName, date, matches, teamNumbers, rankings);
 
         for(int teamNumber : teamNumbers) {
             var teamOpt = Algorithms.binarySearch(CSVParser.getTeams(), ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum));
@@ -138,15 +150,15 @@ public final class APIFetcher {
                 System.err.printf("Could not find team %s\n", teamNumber);
                 continue;
             }
-
-            teamOpt.get().addEvent(event);
         }
 
+        TerminalTextFormatter.println("Event " + eventKey + " loaded!", ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         return event;
     }
 
     @SuppressWarnings("unchecked")
     private static List<Integer> getEventTeamNumbers(String eventKey) {
+        TerminalTextFormatter.println("Loading team numbers from event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         var json = (List<String>) fetch("/event/" + eventKey + "/teams/keys");
 
         ArrayList<Integer> teamNumbers = new ArrayList<>();
@@ -162,6 +174,7 @@ public final class APIFetcher {
 
     @SuppressWarnings("unchecked")
     public static List<Event> getEvents(String districtKey) {
+        TerminalTextFormatter.println("Loading district " + districtKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         var json = (List<String>) fetch("/district/" + districtKey + "/events/keys");
 
         ArrayList<Event> events = new ArrayList<>();
@@ -172,7 +185,17 @@ public final class APIFetcher {
 
         Algorithms.mergeSort(events, (event1, event2) -> event1.getStartDate().compareTo(event2.getStartDate()));
 
+        for(Event event : events) {
+            for (Team team : event.getTeams()) {
+                team.addEvent(event);
+            }
+        }
+
         return events;
+    }
+
+    public static District getDistrict(String districtKey) {
+        return new District(getEvents(districtKey));
     }
 
     /**
