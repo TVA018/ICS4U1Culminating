@@ -1,12 +1,19 @@
 package ranking;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import data.Ranking;
 import data.Team;
+import tba.Conversions;
+import util.Algorithms;
+import util.ComparatorFactory;
 
 public class District extends Rankable {
-    private List<Event> events;
+    private final List<Event> events;
+
+    private final ArrayList<Ranking> districtRankings = new ArrayList<>();
 
     public District(List<Event> events){
         this.events = events;
@@ -54,11 +61,25 @@ public class District extends Rankable {
 
             eventTeamIndices.set(lowestTeamEventIndex, eventTeamIndices.get(lowestTeamEventIndex) + 1);
         }
+
+        HashMap<Team, Integer> totalDistrictPoints = new HashMap<>();
+
+        for(Event event : events) {
+            for(var entry : event.getDistrictPointsMap().entrySet()) {
+                Team team = entry.getKey();
+                totalDistrictPoints.put(team, totalDistrictPoints.getOrDefault(team, 0) + entry.getValue());
+            }
+        }
+
+        for(var entry : totalDistrictPoints.entrySet()) {
+            districtRankings.add(new Ranking(entry.getKey(), entry.getValue()));
+        }
+
+        Algorithms.mergeSort(districtRankings, (r1, r2) -> (int) r1.getPoints() - (int) r2.getPoints());
     }
     
     @Override
     public List<Ranking> getRankings() {
-        // TODO loop through all events and sim event district points then sum and rank
-        throw new UnsupportedOperationException("Unimplemented method 'getRankings'");
+        return districtRankings;
     }
 }

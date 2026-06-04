@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import data.Match;
@@ -72,7 +73,7 @@ public final class APIFetcher {
      */
     @SuppressWarnings("unchecked")
     public static List<Match> getMatches(String eventKey) {
-        TerminalTextFormatter.println("Loading matches from event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
+        TerminalTextFormatter.println("Loading matches...", ANSIFlag.YELLOW_TEXT);
         var json = (List<HashMap<String, Object>>) fetch("/event/" + eventKey + "/matches/simple");
 
         ArrayList<Match> matches = new ArrayList<>();
@@ -128,20 +129,23 @@ public final class APIFetcher {
         var matches = getMatches(eventKey);
         var teamNumbers = getEventTeamNumbers(eventKey);
 
-        TerminalTextFormatter.println("Loading information of event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
+        TerminalTextFormatter.println("Loading information...", ANSIFlag.YELLOW_TEXT);
         var eventInfo = (HashMap<String, Object>) fetch("/event/" + eventKey + "/simple");
         
-        TerminalTextFormatter.println("Loading rankings of event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
+        TerminalTextFormatter.println("Loading rankings...", ANSIFlag.YELLOW_TEXT);
         var eventRankingInfo = (HashMap<String, Object>) fetch("/event/" + eventKey + "/rankings");
         var rankings = (List<HashMap<String, Object>>) eventRankingInfo.get("rankings");
+
+        TerminalTextFormatter.println("Loading district points...", ANSIFlag.YELLOW_TEXT);
+        var districtPointsMap = (Map<String, Map<String, Integer>>) ((Map<String, Object>) fetch("/event/" + eventKey + "/district_points")).get("points");
 
         var eventName = (String) eventInfo.get("name");
         var startDateStr = (String) eventInfo.get("start_date");
 
         Date date = Date.valueOf(startDateStr);
 
-        TerminalTextFormatter.println("Creating Event object...", ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
-        Event event = new Event(eventName, date, matches, teamNumbers, rankings);
+        TerminalTextFormatter.println("Creating Event object...", ANSIFlag.YELLOW_TEXT);
+        Event event = new Event(eventName, date, matches, teamNumbers, rankings, districtPointsMap);
 
         for(int teamNumber : teamNumbers) {
             var teamOpt = Algorithms.binarySearch(CSVParser.getTeams(), ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum));
@@ -158,7 +162,7 @@ public final class APIFetcher {
 
     @SuppressWarnings("unchecked")
     private static List<Integer> getEventTeamNumbers(String eventKey) {
-        TerminalTextFormatter.println("Loading team numbers from event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
+        TerminalTextFormatter.println("Loading team numbers..." + eventKey, ANSIFlag.YELLOW_TEXT);
         var json = (List<String>) fetch("/event/" + eventKey + "/teams/keys");
 
         ArrayList<Integer> teamNumbers = new ArrayList<>();
@@ -192,6 +196,13 @@ public final class APIFetcher {
         }
 
         return events;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Map<String, Integer>> getEventDistrictPoints(String eventKey) {
+        Object json = fetch("/event/" + eventKey + "/district_points");
+
+        return (Map<String, Map<String, Integer>>) json;
     }
 
     public static District getDistrict(String districtKey) {

@@ -7,6 +7,7 @@ import tba.APIFetcher;
 import util.Algorithms;
 import util.CSVParser;
 import util.ComparatorFactory;
+import util.PrettyPrint;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -17,6 +18,8 @@ public class Main {
         for(var ranking : event.getRankings()) {
             System.out.printf("%s: %s\n", ranking.getTeam().getTeamNum(), ranking.getPoints());
         }
+
+        PrettyPrint.pprint(event.getDistrictPointsMap());
 
         // var match1 = event.getMatches().get(0);
 

@@ -22,9 +22,17 @@ public class Event extends Rankable {
 
     /** {teamNumber: rankingScore} */
     private final ArrayList<Ranking> rankingScores = new ArrayList<>();
+    private final HashMap<Team, Integer> teamDistrictPoints = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public Event(String name, Date startDate, List<Match> matches, List<Integer> teamNumbers, List<HashMap<String, Object>> rankingsList){
+    public Event(
+        String name, 
+        Date startDate, 
+        List<Match> matches, 
+        List<Integer> teamNumbers, 
+        List<HashMap<String, Object>> rankingScoresJson,
+        Map<String, Map<String, Integer>> districtPointsMap
+    ){
         this.name = name;
         this.startDate = startDate;
         this.matches = matches;
@@ -51,12 +59,20 @@ public class Event extends Rankable {
         }
 
         // Load rankings
-        for(var teamRankingScoreInfo : rankingsList) {
+        for(var teamRankingScoreInfo : rankingScoresJson) {
             int teamNumber = Conversions.teamNumberFromKey((String) teamRankingScoreInfo.get("team_key"));
             Team team = Algorithms.binarySearch(teams, ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum)).get();
             double rankingScore = ((List<Double>) teamRankingScoreInfo.get("sort_orders")).get(0);
 
             rankingScores.add(new Ranking(team, rankingScore));
+        }
+        
+        for(var entry : districtPointsMap.entrySet()) {
+            int teamNumber = Conversions.teamNumberFromKey(entry.getKey());
+            Team team = Algorithms.binarySearch(teams, ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum)).get();
+            int districtPoints = entry.getValue().get("total");
+
+            teamDistrictPoints.put(team, districtPoints);
         }
     }
 
@@ -70,6 +86,10 @@ public class Event extends Rankable {
 
     public Date getStartDate() {
         return startDate;
+    }
+
+    public Map<Team, Integer> getDistrictPointsMap() {
+        return teamDistrictPoints;
     }
 
     @Override

@@ -14,14 +14,14 @@ public class PrettyPrint {
     @SuppressWarnings("unchecked")
     private static void pprint(Object json, String indentStr, int nestingLevel) {
         if(json instanceof Map) { // Map
-            Map<String, Object> jsonMap = (Map<String, Object>) json;
+            var jsonMap = (Map<Object, Object>) json;
             System.out.println("{"); // Opening brace
 
             int entryIndex = 0; // The current entry index
             int mapSize = jsonMap.size();
 
             for (var entry : jsonMap.entrySet()) { // Loop through the entries in the Map
-                String key = entry.getKey();
+                String key = entry.getKey().toString();
                 Object value = entry.getValue();
 
                 // Print the key indented
