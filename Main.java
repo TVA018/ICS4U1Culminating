@@ -2,6 +2,7 @@ import java.io.IOException;
 
 import data.Team;
 import ranking.District;
+import ranking.Event;
 import tba.APIFetcher;
 import util.Algorithms;
 import util.CSVParser;
@@ -9,10 +10,12 @@ import util.ComparatorFactory;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        District district = APIFetcher.getDistrict("2026ont");
+        Event event = APIFetcher.getEvent("2026oncmp1");
 
-        for(Team team : district.getTeams()) {
-            System.out.println(team.getTeamNum());
+        for(Team team : event.getTeams()) team.addEvent(event);
+
+        for(var ranking : event.getRankings()) {
+            System.out.printf("%s: %s\n", ranking.getTeam().getTeamNum(), ranking.getPoints());
         }
 
         // var match1 = event.getMatches().get(0);

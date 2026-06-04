@@ -113,4 +113,9 @@ public class Team {
 
         return ((double) totalPoints) / validMatches.size();
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(teamNum);
+    }
 }
