@@ -47,4 +47,13 @@ public class TurretBot extends LaneShooterBot{
         return SOTM;
     }
     
+    @Override
+    public String toString() {
+        String string = super.toString() + 
+            "\n > Degrees of Rotation: ±" + String.valueOf(degreesOfRotation) + "\n";
+
+        if(SOTM) string += " > Can Shoot on the Move";
+
+        return string;
+    }
 }

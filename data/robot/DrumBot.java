@@ -33,4 +33,9 @@ public class DrumBot extends ShooterBot{
     public double getDrumBallWidth() {
         return drumBallWidth;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\n > Drum Ball Width: " + String.format("%.2f", drumBallWidth);
+    }
 }

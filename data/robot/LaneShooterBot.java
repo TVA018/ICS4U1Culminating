@@ -33,4 +33,9 @@ public class LaneShooterBot extends ShooterBot{
     public int getNumLanes() {
         return numLanes;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\n > Number of lanes: " + numLanes + "\n";
+    }
 }

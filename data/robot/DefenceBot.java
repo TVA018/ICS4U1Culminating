@@ -2,7 +2,7 @@ package data.robot;
 
 import data.robot.enums.DriveTrain;
 
-public class DefenceBot extends Robot{
+public class DefenceBot extends Robot {
     private boolean shotBlocker;
 
     public DefenceBot(DriveTrain driveTrain, int fuelCapacity, boolean extendoHopper, boolean trench, boolean bump, boolean shotBlocker) {
@@ -17,5 +17,14 @@ public class DefenceBot extends Robot{
      */
     public boolean hasShotBlocker(){
         return shotBlocker;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(super.toString());
+
+        if(shotBlocker) builder.append("\n- Has shot blocker");
+
+        return builder.toString();
     }
 }
