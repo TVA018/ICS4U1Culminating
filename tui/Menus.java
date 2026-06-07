@@ -13,8 +13,8 @@ import util.TerminalTextFormatter.ANSIFlag;
 import util.ValidatedScanner.StringInputParser;
 import util.ValidatedScanner;
 
-public final class Constants {
-    private Constants() {}
+public final class Menus {
+    private Menus() {}
 
     private static final StringInputParser<Integer> BASIC_INT_PARSER = stringInput -> Integer.parseInt(stringInput);
     public static final ValidatedScanner SCANNER = new ValidatedScanner();

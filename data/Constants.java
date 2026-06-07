@@ -1,3 +1,4 @@
+package data;
 public final class Constants {
     private Constants() {}
 

@@ -15,6 +15,6 @@ public class Main {
             team.addEvent(event);
         }
 
-        while (tui.Constants.MAIN_MENU.exec() > 0) {}
+        while (tui.Menus.MAIN_MENU.exec() > 0) {}
     }
 }

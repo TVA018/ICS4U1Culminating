@@ -81,6 +81,8 @@ public class Team {
     public double calculateMAD(double factor){
         List<Match> validMatches = Algorithms.filter(matches, Match::isQualifier);
 
+        if(validMatches.isEmpty()) return 0.0;
+
         double mad;
         if (this.teamColour(validMatches.get(0))==TeamType.BLUE){
             mad = validMatches.get(0).getMeanBlueScore();
@@ -107,6 +109,8 @@ public class Team {
     public double calculateAverageMatchPoints() {
         List<Match> validMatches = Algorithms.filter(matches, Match::isQualifier);
 
+        if(validMatches.isEmpty()) return 0.0;
+
         int totalPoints = 0;
 
         for(Match match : validMatches) {
@@ -119,7 +123,9 @@ public class Team {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(
-            TerminalTextFormatter.applyFlags("Team " + String.valueOf(teamNum) + ": " + teamName, ANSIFlag.BOLD) + 
+            TerminalTextFormatter.applyFlags("Team " + String.valueOf(teamNum) + ": " + teamName, ANSIFlag.BOLD) +
+            "\nAverage Match Points: " + String.valueOf(calculateAverageMatchPoints()) +
+            "\nMAD: " + String.valueOf(calculateMAD(Constants.MAD_FACTOR)) +
             "\nEvents:\n"
         );
 
