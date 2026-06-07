@@ -1,7 +1,6 @@
 package tui;
 
 import util.TerminalTextFormatter;
-import util.ValidatedScanner;
 import util.TerminalTextFormatter.ANSIFlag;
 import util.ValidatedScanner.StringInputParser;
 

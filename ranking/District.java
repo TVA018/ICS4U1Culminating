@@ -77,6 +77,10 @@ public class District extends Rankable {
 
         Algorithms.mergeSort(districtRankings, (r1, r2) -> (int) r1.getPoints() - (int) r2.getPoints());
     }
+
+    public List<Event> getEvents() {
+        return events;
+    }
     
     @Override
     public List<Ranking> getRankings() {

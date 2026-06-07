@@ -1,20 +1,10 @@
-import java.io.IOException;
-
-import data.Team;
-import ranking.District;
-import ranking.Event;
 import tba.APIFetcher;
+import tui.Menus;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        // District district = APIFetcher.getDistrict("2026ont");
+    public static void main(String[] args) {
+        APIFetcher.start();
 
-        Event event = APIFetcher.getEvent("2026onwin");
-
-        for(Team team : event.getTeams()) {
-            team.addEvent(event);
-        }
-
-        while (tui.Menus.MAIN_MENU.exec() > 0) {}
+        while (Menus.MAIN_MENU.exec() > 0) {}
     }
 }

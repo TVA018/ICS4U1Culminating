@@ -34,6 +34,14 @@ public final class APIFetcher {
 
     private static final String API_KEY = ENV.get("TBA_API_KEY");
 
+    public static District ONT_DISTRICT = null;
+
+    public static void start() {
+        if(ONT_DISTRICT != null) return;
+
+        ONT_DISTRICT = getDistrict("2026ont");
+    }
+
     /**
      * Dev function. Writes a list of all team numbers in 2026 to a file, delimited by new-lines (\n)
      * @param filePath The file to write to
@@ -162,7 +170,7 @@ public final class APIFetcher {
 
     @SuppressWarnings("unchecked")
     private static List<Integer> getEventTeamNumbers(String eventKey) {
-        TerminalTextFormatter.println("Loading team numbers..." + eventKey, ANSIFlag.YELLOW_TEXT);
+        TerminalTextFormatter.println("Loading team numbers...", ANSIFlag.YELLOW_TEXT);
         var json = (List<String>) fetch("/event/" + eventKey + "/teams/keys");
 
         ArrayList<Integer> teamNumbers = new ArrayList<>();

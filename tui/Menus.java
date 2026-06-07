@@ -1,10 +1,14 @@
 package tui;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import data.Team;
+import ranking.District;
+import ranking.Event;
+import tba.APIFetcher;
 import util.Algorithms;
 import util.CSVParser;
 import util.ComparatorFactory;
@@ -18,6 +22,85 @@ public final class Menus {
 
     private static final StringInputParser<Integer> BASIC_INT_PARSER = stringInput -> Integer.parseInt(stringInput);
     public static final ValidatedScanner SCANNER = new ValidatedScanner();
+
+    private static PromptOptionCallback createMainMenuOption(Prompt submenu) {
+        return () -> {
+            int lastCode = 1;
+
+            while (lastCode > 0) {
+                lastCode = submenu.exec();
+            }
+
+            return 1;
+        };
+    }
+
+    private static Optional<Event> getEvent() {
+        int searchType = SCANNER.readInput("Search type (0: By index, 1: By name)\n> ", stringInput -> {
+            int choice = Integer.parseInt(stringInput);
+
+            if(choice != 0 && choice != 1) throw new RuntimeException("The input must be a 0 or 1");
+
+            return choice;
+        });
+
+        List<Event> events = APIFetcher.ONT_DISTRICT.getEvents();
+
+        if(searchType == 0) { // Index search
+            for(int i = 0; i < events.size(); i++) {
+                System.out.println(String.valueOf(i + 1) + ". " + events.get(i).getName());
+            }
+
+            int eventIndex = SCANNER.readInput("> ", stringInput -> {
+                int choice = Integer.parseInt(stringInput);
+
+                if(choice < 0) throw new RuntimeException("Minimum value: 0");
+                if(choice >= events.size()) throw new RuntimeException("Maximum value: " + String.valueOf(events.size()));
+
+                return choice;
+            });
+
+            return Optional.of(events.get(eventIndex));
+        } else { // Fuzzy name search
+            String eventPartialName = SCANNER.readLine("Enter the name of the event (partial names accepted)\n> ");
+            Pattern pattern = Pattern.compile(eventPartialName, Pattern.CASE_INSENSITIVE);
+
+            return Algorithms.linearSearch(events, event -> pattern.matcher(event.getName()).find());
+        }
+    }
+
+    private static final Prompt DISTRICT_PROMPT = new Prompt(
+        "ONTARIO DISTRICT",
+        new PromptOption("View Teams", () -> {
+            System.out.println();
+            for(Team team : APIFetcher.ONT_DISTRICT.getTeams()) {
+                System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
+            }
+            
+            return 1;
+        }),
+        new PromptOption("Return", () -> 0)
+    );
+
+    private static final Prompt EVENT_PROMPT = new Prompt(
+        "EVENTS", 
+        new PromptOption("View Teams", () -> {
+            Optional<Event> eventOpt = getEvent();
+
+            if(eventOpt.isEmpty()) {
+                TerminalTextFormatter.println("Event could not be found", ANSIFlag.RED_TEXT);
+            } else {
+                Event event = eventOpt.get();
+                System.out.println("\n" + event.getName());
+                for(Team team : event.getTeams()) {
+                    System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
+                }
+            }
+
+            return 1;
+        }),
+        new PromptOption("Return", () -> 0)
+    );
 
     private static final Prompt TEAM_PROMPT = new Prompt(
         "TEAM",
@@ -60,17 +143,9 @@ public final class Menus {
 
     public static final Prompt MAIN_MENU = new Prompt(
         "--[MADStrat]--",
-        new PromptOption("District", () -> 1),
-        new PromptOption("Event", () -> 1),
-        new PromptOption("Team", () -> {
-            int lastCode = 1;
-
-            while (lastCode > 0) {
-                lastCode = TEAM_PROMPT.exec();
-            }
-
-            return 1;
-        }),
+        new PromptOption("District", createMainMenuOption(DISTRICT_PROMPT)),
+        new PromptOption("Event", createMainMenuOption(EVENT_PROMPT)),
+        new PromptOption("Team", createMainMenuOption(TEAM_PROMPT)),
         new PromptOption("Exit", () -> 0)
     );
 }
