@@ -12,6 +12,8 @@ import core.data.Team;
 import util.Algorithms;
 import util.CSVParser;
 import util.ComparatorFactory;
+import util.TerminalTextFormatter;
+import util.TerminalTextFormatter.ANSIFlag;
 
 /** Represents an event */
 public class Event extends Rankable {
@@ -122,6 +124,12 @@ public class Event extends Rankable {
 
     @Override
     public String toString() {
-        return name;
+        StringBuilder builder = new StringBuilder(TerminalTextFormatter.applyFlags(name + " (" + key + ")\n", ANSIFlag.BOLD));
+        builder.append("Start date: ").append(startDate.toString()).append("\n");
+        builder.append("Number of matches: ").append(matches.size()).append("\n");
+        builder.append("- Qualifiers: ").append(Algorithms.filter(matches, match -> match.isQualifier()).size()).append("\n");
+        builder.append("- Playoffs: ").append(Algorithms.filter(matches, match -> !match.isQualifier()).size());
+
+        return builder.toString();
     }
 }

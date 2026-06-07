@@ -141,6 +141,13 @@ public final class TUICore {
             
             return 1;
         }),
+        new PromptOption("Events List", () -> {
+            for(Event event : APIFetcher.ONT_DISTRICT.getEvents()) {
+                System.out.println("- " + event.getName());
+            }
+            
+            return 1;
+        }),
         new PromptOption("District Rankings", () -> printRankings(APIFetcher.ONT_DISTRICT.getRankings(), "DISTRICT POINTS")),
         new PromptOption("MAD Rankings", () -> {
             boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots? (y/n)\n> ", BASIC_BOOL_PARSER);
@@ -152,6 +159,10 @@ public final class TUICore {
     private static Prompt createEventPrompt(Event event) {
         return new Prompt(
             "EVENT CHOSEN: " + event.getName(), 
+            new PromptOption("Event Info", () -> {
+                System.out.println(event);
+                return 1;
+            }),
             new PromptOption("Teams List", () -> {
                 // Prints out all teams
                 System.out.println("\n" + event.getName());
