@@ -177,15 +177,6 @@ public final class APIFetcher {
         TerminalTextFormatter.println("Creating Event object...", ANSIFlag.YELLOW_TEXT);
         Event event = new Event(eventKey, eventName, date, matches, teamNumbers, rankingScores, districtPointsMap);
 
-        for(int teamNumber : teamNumbers) {
-            var teamOpt = Algorithms.binarySearch(CSVParser.getTeams(), ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum));
-
-            if(teamOpt.isEmpty()) {
-                System.err.printf("Could not find team %s\n", teamNumber);
-                continue;
-            }
-        }
-
         TerminalTextFormatter.println("Event " + eventKey + " loaded!", ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
         return event;
     }

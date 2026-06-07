@@ -64,11 +64,11 @@ public class Simulator {
                 ArrayList<Integer> blueTeams = new ArrayList<>(3);
 
                 for(int i = 0; i < 3; i++) {
-                    redTeams.set(i, Integer.parseInt(allTeamNums[i]));
+                    redTeams.add(Integer.parseInt(allTeamNums[i]));
                 }
 
                 for(int i = 0; i < 3; i++) {
-                    blueTeams.set(i, Integer.parseInt(allTeamNums[i + 3]));
+                    blueTeams.add(Integer.parseInt(allTeamNums[i + 3]));
                 }
 
                 matchConfigs.add(new MatchConfig(redTeams, blueTeams));
@@ -122,13 +122,15 @@ public class Simulator {
             int blueRP = calculateRP(blueScore, winningAlliance.equals(WinningAlliance.BLUE));
             
             for(int teamNum : redTeams) {
+                numMatchesPlayed.put(teamNum, numMatchesPlayed.getOrDefault(teamNum, 0) + 1);
                 totalRankingPoints.put(teamNum, totalRankingPoints.getOrDefault(teamNum, 0) + redRP);
             }
 
             for(int teamNum : blueTeams) {
+                numMatchesPlayed.put(teamNum, numMatchesPlayed.getOrDefault(teamNum, 0) + 1);
                 totalRankingPoints.put(teamNum, totalRankingPoints.getOrDefault(teamNum, 0) + blueRP);
             }
-            
+
             matches.add(match);
         }
 

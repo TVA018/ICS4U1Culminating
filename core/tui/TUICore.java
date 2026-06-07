@@ -8,8 +8,10 @@ import java.util.regex.Pattern;
 
 import core.Simulator;
 import core.data.Constants;
+import core.data.Match;
 import core.data.Ranking;
 import core.data.Team;
+import core.data.enums.WinningAlliance;
 import core.ranking.Event;
 import core.tba.APIFetcher;
 import util.Algorithms;
@@ -126,6 +128,72 @@ public final class TUICore {
         new PromptOption("Return", () -> 0)
     );
 
+    private static Prompt createEventPrompt(Event event) {
+        return new Prompt(
+            "EVENT CHOSEN: " + event.getName(), 
+            new PromptOption("Teams List", () -> {
+                System.out.println("\n" + event.getName());
+                for(Team team : event.getTeams()) {
+                    System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
+                }
+
+                return 1;
+            }),
+            new PromptOption("Matches", () -> {
+                List<Match> matches = event.getMatches();
+                int playoffMatchStartIndex = -1;
+
+                for(int i = 0; i < matches.size(); i++) {
+                    Match match = matches.get(i);
+                    WinningAlliance winner = match.getWinner();
+
+                    if(!match.isQualifier() && playoffMatchStartIndex < 0)
+                        playoffMatchStartIndex = i;
+
+                    int matchNum = match.isQualifier() ? match.getMatchNumber() : (1 + i - playoffMatchStartIndex);
+
+                    System.out.println(TerminalTextFormatter.applyFlags(
+                        (match.isQualifier() ? "Qual " : "Playoff ") + String.valueOf(matchNum) + ":",
+                        ANSIFlag.BOLD
+                    ));
+
+                    String redHeader = TerminalTextFormatter.applyFlags(
+                        " - Red (" + String.valueOf(match.getRedScore()) + " Points)",
+                        ANSIFlag.RED_TEXT
+                    );
+
+                    String blueHeader = TerminalTextFormatter.applyFlags(
+                        " - Blue (" + String.valueOf(match.getBlueScore()) + " Points)",
+                        ANSIFlag.BLUE_TEXT
+                    );
+
+                    if(winner.equals(WinningAlliance.RED)) redHeader = TerminalTextFormatter.applyFlags(redHeader, ANSIFlag.BOLD);
+                    if(winner.equals(WinningAlliance.BLUE)) blueHeader = TerminalTextFormatter.applyFlags(blueHeader, ANSIFlag.BOLD);
+
+                    System.out.println(redHeader);
+
+                    for(Team team: match.getRedTeams()) {
+                        System.out.println("  - " + team.asNameLabel());
+                    }
+
+                    System.out.println(blueHeader);
+
+                    for(Team team: match.getBlueTeams()) {
+                        System.out.println("  - " + team.asNameLabel());
+                    }
+                }
+                
+                return 1;
+            }),
+            new PromptOption("Event Rankings", () -> printRankings(event.getRankings(), "RANKING SCORE")),
+            new PromptOption("MAD Rankings", () -> {
+                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots? (y/n)\n> ", BASIC_BOOL_PARSER);
+                return printRankings(event.getMADRankings(Constants.MAD_FACTOR, onlyIncludeShooters), "MAD");
+            }),
+            new PromptOption("Return", () -> 0)
+        );
+    }
+
     private static int eventMenu() {
         // Get event
         Optional<Event> eventOpt = getEvent();
@@ -137,23 +205,7 @@ public final class TUICore {
 
         Event event = eventOpt.get();
 
-        Prompt prompt = new Prompt(
-            "EVENT CHOSEN: " + event.getName(), 
-            new PromptOption("Teams List", () -> {
-                System.out.println("\n" + event.getName());
-                for(Team team : event.getTeams()) {
-                    System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
-                }
-
-                return 1;
-            }),
-            new PromptOption("Event Rankings", () -> printRankings(event.getRankings(), "RANKING SCORE")),
-            new PromptOption("MAD Rankings", () -> {
-                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots? (y/n)\n> ", BASIC_BOOL_PARSER);
-                return printRankings(event.getMADRankings(Constants.MAD_FACTOR, onlyIncludeShooters), "MAD");
-            }),
-            new PromptOption("Return", () -> 0)
-        );
+        Prompt prompt = createEventPrompt(event);
 
         return createMainMenuOption(prompt).exec();
     }
@@ -209,10 +261,7 @@ public final class TUICore {
 
         Event event = simulator.simulate();
 
-        Prompt prompt = new Prompt(
-            "Simulation",
-            new PromptOption()
-        );
+        Prompt prompt = createEventPrompt(event);
 
         return createMainMenuOption(prompt).exec();
     }

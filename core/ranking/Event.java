@@ -66,6 +66,8 @@ public class Event extends Rankable {
 
             rankingScores.add(new Ranking(team, rankingScore));
         }
+
+        Algorithms.mergeSort(rankingScores, (r1, r2) -> (int) ((r2.getPoints() - r1.getPoints()) * 100));
         
         for(var entry : districtPointsMap.entrySet()) {
             int teamNumber = entry.getKey();
