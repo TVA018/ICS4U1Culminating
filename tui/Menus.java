@@ -52,10 +52,10 @@ public final class Menus {
             }
 
             int eventIndex = SCANNER.readInput("> ", stringInput -> {
-                int choice = Integer.parseInt(stringInput);
+                int choice = Integer.parseInt(stringInput) - 1;
 
-                if(choice < 0) throw new RuntimeException("Minimum value: 0");
-                if(choice >= events.size()) throw new RuntimeException("Maximum value: " + String.valueOf(events.size()));
+                if(choice < 1) throw new RuntimeException("Minimum value: 1");
+                if(choice > events.size()) throw new RuntimeException("Maximum value: " + String.valueOf(events.size()));
 
                 return choice;
             });
@@ -69,6 +69,35 @@ public final class Menus {
         }
     }
 
+    private static int eventMenu() {
+        // Get event
+        Optional<Event> eventOpt = getEvent();
+
+        if(eventOpt.isEmpty()) {
+            TerminalTextFormatter.println("Event could not be found", ANSIFlag.RED_TEXT);
+            return 1;
+        }
+
+        Event event = eventOpt.get();
+
+        // Re-prompt menu until exited
+        Prompt prompt = new Prompt(
+            "EVENT CHOSEN: " + event.getName(), 
+            new PromptOption("Teams List", () -> {
+                System.out.println("\n" + event.getName());
+                for(Team team : event.getTeams()) {
+                    System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
+                }
+
+                return 1;
+            }),
+            new PromptOption("", null),
+            new PromptOption("Return", () -> 0)
+        );
+
+        return createMainMenuOption(prompt).exec();
+    }
+
     private static final Prompt DISTRICT_PROMPT = new Prompt(
         "ONTARIO DISTRICT",
         new PromptOption("View Teams", () -> {
@@ -77,26 +106,6 @@ public final class Menus {
                 System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
             }
             
-            return 1;
-        }),
-        new PromptOption("Return", () -> 0)
-    );
-
-    private static final Prompt EVENT_PROMPT = new Prompt(
-        "EVENTS", 
-        new PromptOption("View Teams", () -> {
-            Optional<Event> eventOpt = getEvent();
-
-            if(eventOpt.isEmpty()) {
-                TerminalTextFormatter.println("Event could not be found", ANSIFlag.RED_TEXT);
-            } else {
-                Event event = eventOpt.get();
-                System.out.println("\n" + event.getName());
-                for(Team team : event.getTeams()) {
-                    System.out.println(String.valueOf(team.getTeamNum()) + " - " + team.getName());
-                }
-            }
-
             return 1;
         }),
         new PromptOption("Return", () -> 0)
@@ -144,7 +153,7 @@ public final class Menus {
     public static final Prompt MAIN_MENU = new Prompt(
         "--[MADStrat]--",
         new PromptOption("District", createMainMenuOption(DISTRICT_PROMPT)),
-        new PromptOption("Event", createMainMenuOption(EVENT_PROMPT)),
+        new PromptOption("Event", Menus::eventMenu),
         new PromptOption("Team", createMainMenuOption(TEAM_PROMPT)),
         new PromptOption("Exit", () -> 0)
     );

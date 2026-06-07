@@ -63,7 +63,8 @@ public abstract class Robot {
         builder
             .append(TerminalTextFormatter.applyFlags(getClass().getSimpleName() + ":", ANSIFlag.ITALIC) + "\n")
             .append("- GENERAL\n")
-            .append(" > Drivetrain: " + driveTrain.toString() + "\n");
+            .append(" > Drivetrain: " + driveTrain.toString() + "\n")
+            .append(" > Fuel Capacity: " + String.valueOf(fuelCapacity) + "\n");
 
         if(extendoHopper) builder.append(" > Has Extendo-Hopper\n");
         

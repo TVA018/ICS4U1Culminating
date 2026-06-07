@@ -3,7 +3,7 @@ package data.robot;
 import data.robot.enums.DriveTrain;
 import data.robot.enums.Indexer;
 
-public class ShooterBot extends Robot{
+public class ShooterBot extends Robot {
     protected double bps;
     protected boolean adjustableHood;
     protected boolean flywheel;
@@ -66,5 +66,19 @@ public class ShooterBot extends Robot{
         return autoAim;
     }
     
-    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(super.toString());
+
+        builder
+            .append("\n- SHOOTING\n")
+            .append(" > BPS: " + String.valueOf(bps) + "\n")
+            .append(adjustableHood ? " > Adjustable Hood" : " > Fixed Hood").append("\n")
+            .append(flywheel ? " > Has Flywheel" : " > No Flywheel").append("\n")
+            .append(" > Indexer: " + indexer.toString() + "\n")
+            .append(passing ? " > Can Pass" : " > Cannot Pass").append("\n")
+            .append(autoAim ? " > Auto-Aim" : " > Manual Aim");
+
+        return builder.toString();
+    }
 }
