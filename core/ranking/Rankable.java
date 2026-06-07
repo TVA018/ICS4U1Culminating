@@ -11,10 +11,12 @@ import util.Algorithms;
 public abstract class Rankable {
     protected final List<Team> teams = new ArrayList<>();
 
+    /** @return the teams in this object */
     public List<Team> getTeams() {
         return teams;
     }
 
+    /** @return the ranking of teams in this object sorted by their MAD in descending order (highest MAD first) */
     public List<Ranking> getMADRankings(double factor, boolean onlyIncludeShooters) {
         List<Team> allTeams = getTeams();
         List<Team> validTeams;
@@ -37,5 +39,6 @@ public abstract class Rankable {
         return madRanks;
     }
 
+    /** @return the ranking of teams in this object sorted by their rank in ascending order (rank 1 first, rank 2 second, etc.) */
     public abstract List<Ranking> getRankings();
 }

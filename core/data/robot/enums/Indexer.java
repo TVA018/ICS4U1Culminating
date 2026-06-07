@@ -1,5 +1,6 @@
 package core.data.robot.enums;
 
+/** The indexer type of a robot */
 public enum Indexer {
     DYE_ROTOR("Dye Rotor"),
     DOUBLE_DYE_ROTOR("Double Dye Rotor"),

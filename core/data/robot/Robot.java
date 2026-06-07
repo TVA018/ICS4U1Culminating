@@ -11,6 +11,14 @@ public abstract class Robot {
     protected boolean trench;
     protected boolean bump;
     
+    /**
+     * Constructs a new robot
+     * @param driveTrain The drivetrain type
+     * @param fuelCapacity How much fuel can the robot hold within itself
+     * @param extendoHopper Does it have an extendo-hopper?
+     * @param trench Can the robot go under the trench?
+     * @param bump Can the robot go over the bump?
+     */
     public Robot(DriveTrain driveTrain, int fuelCapacity, boolean extendoHopper, boolean trench, boolean bump){
         this.driveTrain = driveTrain;
         this.fuelCapacity = fuelCapacity;

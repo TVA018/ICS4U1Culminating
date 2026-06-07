@@ -16,7 +16,8 @@ public class ValidatedScanner {
          * 
          * For example, if you want a positive integer, you can implement the function like this:
          * 
-         * <blockquote><pre>
+         * <pre>
+         * {@code
          * StringInputParser<Integer> positiveIntegerParser = inputStr -> {
          *     int parsedValue = Integer.parseInt(inputStr);
          * 
@@ -26,7 +27,8 @@ public class ValidatedScanner {
          *         throw new RuntimeException("The input has to be a positive integer!");
          *     }
          * }
-         * </pre></blockquote>
+         * }
+         * </pre>
          * 
          * @param inputString The input read as a string
          * @return The parsed input

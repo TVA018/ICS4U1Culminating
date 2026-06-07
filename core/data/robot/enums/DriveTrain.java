@@ -1,5 +1,6 @@
 package core.data.robot.enums;
 
+/** The drivetrain type of a robot */
 public enum DriveTrain {
     SWERVE("Swerve"),
     TANK("Tank"),

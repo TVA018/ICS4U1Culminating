@@ -6,6 +6,21 @@ import core.data.robot.enums.Indexer;
 public class LaneShooterBot extends ShooterBot{
     protected int numLanes;
 
+    /**
+     * Constructs a new lane shooter robot (the fuel moves through lanes)
+     * @param driveTrain The drivetrain type
+     * @param fuelCapacity How much fuel can the robot hold within itself
+     * @param extendoHopper Does it have an extendo-hopper?
+     * @param trench Can the robot go under the trench?
+     * @param bump Can the robot go over the bump?
+     * @param bps How much fuel can the robot shoot per second
+     * @param adjustableHood Does the robot have an adjustable hood?
+     * @param flywheel Does the robot have a flywheel?
+     * @param indexer The type of indexer the robot uses
+     * @param passing Can the robot pass?
+     * @param autoAim Can the robot automatically aim?
+     * @param numLanes How many lanes does the robot have?
+     */
     public LaneShooterBot(
         DriveTrain driveTrain, 
         int fuelCapacity, 
@@ -25,10 +40,8 @@ public class LaneShooterBot extends ShooterBot{
         this.numLanes = numLanes;
     }
 
-    // Accessors
-
     /** 
-     * @return an int of the number of shooting lanes
+     * @return the number of shooting lanes on the robot
      */
     public int getNumLanes() {
         return numLanes;

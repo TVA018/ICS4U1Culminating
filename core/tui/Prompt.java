@@ -8,12 +8,22 @@ public final class Prompt {
     private final String header;
     private final PromptOption[] options;
     
+    /**
+     * Constructs a new prompt
+     * @param header The header of the prompt
+     * @param options The options of this prompt
+     */
     public Prompt(String header, PromptOption ...options) {
         this.header = TerminalTextFormatter.applyFlags(header, ANSIFlag.BOLD);
         this.options = options;
     }
 
+    /**
+     * Opens this prompt
+     * @return Whether this prompt should be reopened
+     */
     public int exec() {
+        // Limit the options
         StringInputParser<Integer> optionParser = (stringInput) -> {
             int option = Integer.parseInt(stringInput);
 
@@ -23,7 +33,7 @@ public final class Prompt {
             return option;
         };
 
-        // Print
+        // Print options
         System.out.println("\n" + header);
 
         for(int optionIndex = 0; optionIndex < options.length; optionIndex++) {
@@ -36,6 +46,6 @@ public final class Prompt {
         int optionIndex = TUICore.SCANNER.readInput("> ", optionParser) - 1;
         PromptOption optionChosen = options[optionIndex];
 
-        return optionChosen.callback().exec();
+        return optionChosen.callback().exec(); // Run the corresponding callback
     }
 }

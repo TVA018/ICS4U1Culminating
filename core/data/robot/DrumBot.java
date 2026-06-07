@@ -6,6 +6,21 @@ import core.data.robot.enums.Indexer;
 public class DrumBot extends ShooterBot{
     private double drumBallWidth;
 
+    /**
+     * Constructs a new drum shooter robot
+     * @param driveTrain The drivetrain type
+     * @param fuelCapacity How much fuel can the robot hold within itself
+     * @param extendoHopper Does it have an extendo-hopper?
+     * @param trench Can the robot go under the trench?
+     * @param bump Can the robot go over the bump?
+     * @param bps How much fuel can the robot shoot per second
+     * @param adjustableHood Does the robot have an adjustable hood?
+     * @param flywheel Does the robot have a flywheel?
+     * @param indexer The type of indexer the robot uses
+     * @param passing Can the robot pass?
+     * @param autoAim Can the robot automatically aim?
+     * @param drumBallWidth How much fuel can the robot fit in its drum shooter's width
+     */
     public DrumBot(
         DriveTrain driveTrain,
         int fuelCapacity,
@@ -25,10 +40,8 @@ public class DrumBot extends ShooterBot{
         this.drumBallWidth = drumBallWidth;
     }
 
-    // Accessors
-
     /** 
-     * @return a double of how many balls can fit through a team's shooter at once
+     * @return how many balls can fit through a team's shooter at once along the width
      */
     public double getDrumBallWidth() {
         return drumBallWidth;

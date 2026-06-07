@@ -1,6 +1,7 @@
 package core.data.enums;
 
-public enum WinningAlliance{
+/** The winning alliance of a given match */
+public enum WinningAlliance {
     RED,
     BLUE,
     TIE

@@ -3,7 +3,7 @@ package core.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.data.enums.TeamType;
+import core.data.enums.TeamAlliance;
 import core.data.robot.Robot;
 import core.ranking.Event;
 import util.Algorithms;
@@ -17,13 +17,17 @@ public class Team {
     private final ArrayList<Event> events = new ArrayList<>();
     private final ArrayList<Match> matches = new ArrayList<>();
 
+    /**
+     * Constructs a new team
+     * @param teamName The name of the team
+     * @param teamNum The team number
+     * @param robot The robot associated with the team
+     */
     public Team(String teamName, int teamNum, Robot robot){
         this.teamName = teamName;
         this.teamNum = teamNum;
         this.robot = robot;
     }
-
-    // Accessors
 
     /** 
      * @return the team's name
@@ -50,13 +54,13 @@ public class Team {
      * @param match the Match object to check a team's alliance
      * @return an enum TeamType of the team's colour
      */
-    public TeamType teamColour(Match match){
+    public TeamAlliance teamColour(Match match){
         if(match.getRedTeams().contains(this)){
-            return TeamType.RED;
+            return TeamAlliance.RED;
         } else if (match.getBlueTeams().contains(this)){
-            return TeamType.BLUE;
+            return TeamAlliance.BLUE;
         } else {
-            return TeamType.NONE;
+            return TeamAlliance.NONE;
         }
     }
 
@@ -68,7 +72,7 @@ public class Team {
         this.events.add(event);
 
         for (Match eventMatch : event.getMatches()){
-            if(!(this.teamColour(eventMatch)==TeamType.NONE)){
+            if(!(this.teamColour(eventMatch)==TeamAlliance.NONE)){
                 matches.add(eventMatch);
             }
         }
@@ -84,7 +88,7 @@ public class Team {
         if(validMatches.isEmpty()) return 0.0;
 
         double mad;
-        if (this.teamColour(validMatches.get(0))==TeamType.BLUE){
+        if (this.teamColour(validMatches.get(0))==TeamAlliance.BLUE){
             mad = validMatches.get(0).getMeanBlueScore();
         } else {
             mad = validMatches.get(0).getMeanRedScore();
@@ -92,7 +96,7 @@ public class Team {
         
         for (Match teamMatch : validMatches){
             mad *= factor;
-            if (this.teamColour(teamMatch)==TeamType.BLUE){
+            if (this.teamColour(teamMatch)==TeamAlliance.BLUE){
                 mad += teamMatch.getMeanBlueScore()*(1-factor);
             } else {
                 mad += teamMatch.getMeanRedScore()*(1-factor);
@@ -114,12 +118,13 @@ public class Team {
         int totalPoints = 0;
 
         for(Match match : validMatches) {
-            totalPoints += this.teamColour(match) == TeamType.BLUE ? match.getBlueScore() : match.getRedScore();
+            totalPoints += this.teamColour(match) == TeamAlliance.BLUE ? match.getBlueScore() : match.getRedScore();
         }
 
         return ((double) totalPoints) / validMatches.size();
     }
 
+    /** @return A label for the team in the format "teamNumber: teamName" */
     public String asNameLabel() {
         return String.valueOf(teamNum) + ": " + teamName;
     }

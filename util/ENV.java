@@ -10,6 +10,7 @@ import java.util.Map;
 public final class ENV {
     private ENV() {}
 
+    /** The custom environment variables */
     private static Map<String, String> customEnv = new HashMap<>();
 
     static {

@@ -32,7 +32,7 @@ public final class OutputFormatter {
         boolean isFirstRow = true;
 
         for(String[] row : table) {
-            if(isFirstRow) tableBuilder.append(ANSIFlag.UNDERLINE.ANSI_CODE);
+            if(isFirstRow) tableBuilder.append(ANSIFlag.UNDERLINE.ANSI_CODE); // Underline the first row to make the header pop out
 
             for(int cellIndex = 0; cellIndex < row.length; cellIndex++) { // Create a new cell
                 tableBuilder.append("|" + asPaddedString(row[cellIndex], columnWidths[cellIndex] + 2));
@@ -40,7 +40,7 @@ public final class OutputFormatter {
 
             tableBuilder.append("|\n"); // End off the row
             
-            if(isFirstRow) tableBuilder.append(ANSIFlag.RESET.ANSI_CODE);
+            if(isFirstRow) tableBuilder.append(ANSIFlag.RESET.ANSI_CODE); // Stop underlining
 
             isFirstRow = false;
         }

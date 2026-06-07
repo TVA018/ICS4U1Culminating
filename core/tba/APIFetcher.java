@@ -21,7 +21,6 @@ import core.ranking.District;
 import core.ranking.Event;
 import util.Algorithms;
 import util.CSVParser;
-import util.ComparatorFactory;
 import util.ENV;
 import util.SimpleJSon;
 import util.TerminalTextFormatter;
@@ -134,7 +133,7 @@ public final class APIFetcher {
     /**
      * Fetches the given event. This DOES NOT add the event to the team automatically.
      * @param eventKey The key of the event
-     * @return
+     * @return the Event object
      */
     @SuppressWarnings("unchecked")
     public static Event getEvent(String eventKey) {
@@ -181,6 +180,11 @@ public final class APIFetcher {
         return event;
     }
 
+    /**
+     * Gets the numbers of all the teams participating in the event
+     * @param eventKey The event key
+     * @return A List of all the teams in the event represented by their number
+     */
     @SuppressWarnings("unchecked")
     private static List<Integer> getEventTeamNumbers(String eventKey) {
         TerminalTextFormatter.println("Loading team numbers...", ANSIFlag.YELLOW_TEXT);
@@ -197,6 +201,11 @@ public final class APIFetcher {
         return teamNumbers;
     }
 
+    /**
+     * Gets all the events within a given district
+     * @param districtKey The key of the district
+     * @return A list of all the evnets in the district
+     */
     @SuppressWarnings("unchecked")
     public static List<Event> getEvents(String districtKey) {
         TerminalTextFormatter.println("Loading district " + districtKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
@@ -219,6 +228,11 @@ public final class APIFetcher {
         return events;
     }
 
+    /**
+     * Gets a district
+     * @param districtKey The key of the district
+     * @return The District object
+     */
     public static District getDistrict(String districtKey) {
         return new District(getEvents(districtKey));
     }

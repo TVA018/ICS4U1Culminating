@@ -31,10 +31,8 @@ public class TurretBot extends LaneShooterBot{
         this.SOTM = SOTM;        
     }
 
-    // Accessors
-
     /** 
-     * @return a double of the maximum amount of rotation a turret can do
+     * @return how much the robot's turret can rotate from its center (plus-minus)
      */
     public double getDegreesOfRotation() {
         return degreesOfRotation;

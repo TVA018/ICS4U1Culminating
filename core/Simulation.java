@@ -17,7 +17,7 @@ import util.Algorithms;
 import util.CSVParser;
 import util.ComparatorFactory;
 
-public class Simulator {
+public class Simulation {
     private record MatchConfig(ArrayList<Integer> redTeamNums, ArrayList<Integer> blueTeamNums) {}
 
     private String eventKey;
@@ -30,7 +30,26 @@ public class Simulator {
     private ArrayList<Integer> teamNumbers;
     private ArrayList<MatchConfig> matchConfigs = new ArrayList<>();
 
-    public Simulator(String eventFile) throws IOException {
+    /**
+     * Creates a new event simulation
+     * 
+     * The event info is in the following format:
+     * 
+     * <pre>
+     * eventKey
+     * eventName
+     * energizedThreshold,superchargedThreshold
+     * team1Number,team2Number,team3Number,...
+     * match1RedTeam1,match1RedTeam2,match1RedTeam3,match1BlueTeam1,match1BlueTeam2,match1BlueTeam3
+     * match2RedTeam1,match2RedTeam2,match2RedTeam3,match2BlueTeam1,match2BlueTeam2,match2BlueTeam3
+     * ...
+     * </pre>
+     * 
+     * @param eventFile The file to read from
+     * @throws IOException If the file couldn't be parsed properly
+     */
+    public Simulation(String eventFile) throws IOException {
+        // Open the file
         try(BufferedReader reader = new BufferedReader(new FileReader(eventFile))) {
             this.eventKey = reader.readLine();
             this.eventName = reader.readLine();
@@ -43,6 +62,7 @@ public class Simulator {
             teams = new ArrayList<>(teamNumberStrings.length);
             teamNumbers = new ArrayList<>(teamNumberStrings.length);
 
+            // Add all the team objects and check whether the team numbers provided are valid
             for(String str : teamNumberStrings) {
                 int teamNumber = Integer.parseInt(str); 
                 teamNumbers.add(teamNumber);
@@ -54,15 +74,18 @@ public class Simulator {
                 teams.add(teamOptional.get());
             }
 
+            // Sort the list of teams
             Algorithms.mergeSort(teamNumbers, (t1, t2) -> t1 - t2);
 
+            // Read remaining rows (match info)
             List<String> matchRows = reader.readAllLines();
 
             for(String row : matchRows) {
-                String[] allTeamNums = row.split(",", 6);
+                String[] allTeamNums = row.split(",", 6); // List of teams, first 3 are red alliance, last 3 are blue alliance
                 ArrayList<Integer> redTeams = new ArrayList<>(3);
                 ArrayList<Integer> blueTeams = new ArrayList<>(3);
 
+                // Add the team numbers
                 for(int i = 0; i < 3; i++) {
                     redTeams.add(Integer.parseInt(allTeamNums[i]));
                 }
@@ -71,11 +94,16 @@ public class Simulator {
                     blueTeams.add(Integer.parseInt(allTeamNums[i + 3]));
                 }
 
+                // Add the config
                 matchConfigs.add(new MatchConfig(redTeams, blueTeams));
             }
         }
     }
 
+    /**
+     * Simulates this event
+     * @return The simulation results as an Event object
+     */
     public Event simulate() {
         HashMap<Integer, Integer> totalRankingPoints = new HashMap<>(); // {teamNumber: rp}
         HashMap<Integer, Double> rankingScoresMap = new HashMap<>(); // {teamNumber: rankingScore}
@@ -83,17 +111,19 @@ public class Simulator {
         HashMap<Integer, Integer> numMatchesPlayed = new HashMap<>(); // {teamNumber: numMatches}
         ArrayList<Match> matches = new ArrayList<>(matchConfigs.size());
 
+        // Cache the MAD values so we don't have to constantly recalculate
         for (Team team : teams) {
             teamMADs.put(team.getTeamNum(), team.calculateMAD(Constants.MAD_FACTOR));
-
         }
 
+        // Simulate qualifier matches
         for(int i = 0; i < matchConfigs.size(); i++) {
             MatchConfig matchConfig = matchConfigs.get(i);
 
             ArrayList<Integer> redTeams = matchConfig.redTeamNums();
             ArrayList<Integer> blueTeams = matchConfig.blueTeamNums();
 
+            // Calculate scores
             int redScore = (int) (
                 teamMADs.get(redTeams.get(0)) +
                 teamMADs.get(redTeams.get(1)) +
@@ -108,6 +138,7 @@ public class Simulator {
             
             WinningAlliance winningAlliance = (redScore > blueScore) ? WinningAlliance.RED : ((blueScore > redScore) ? WinningAlliance.BLUE : WinningAlliance.TIE);
 
+            // Create match object
             Match match = new Match(
                 i + 1, 
                 true, 
@@ -118,6 +149,7 @@ public class Simulator {
                 winningAlliance
             );
 
+            // Calculate RP
             int redRP = calculateRP(redScore, winningAlliance.equals(WinningAlliance.RED));
             int blueRP = calculateRP(blueScore, winningAlliance.equals(WinningAlliance.BLUE));
             
@@ -131,14 +163,17 @@ public class Simulator {
                 totalRankingPoints.put(teamNum, totalRankingPoints.getOrDefault(teamNum, 0) + blueRP);
             }
 
+            // Add match to the list
             matches.add(match);
         }
 
+        // Calculate ranking score from total ranking points and matches played
         for(var entry : totalRankingPoints.entrySet()) {
             int teamNum = entry.getKey();
             rankingScoresMap.put(teamNum, ((double) entry.getValue()) / numMatchesPlayed.get(teamNum));
         }
 
+        // Return the simulated results
         return new Event(
             eventKey, 
             eventName, 
@@ -150,6 +185,22 @@ public class Simulator {
         );
     }
 
+    /**
+     * Calculates the RP earned by an alliance in a given match. <br>
+     * <br>
+     * Here is how RP is calculated:<br>
+     * <pre>
+     * |              Objective              | Ranking Points Earned |
+     * ---------------------------------------------------------------
+     * |              Win Match              |           3           |
+     * |      Score X fuel (Energized)       |           1           |
+     * | Score Y fuel (Y > X) (Supercharged) |           1           |
+     * </pre>
+     * 
+     * @param score
+     * @param wonMatch
+     * @return
+     */
     private int calculateRP(int score, boolean wonMatch) {
         int rp = wonMatch ? 3 : 0;
 

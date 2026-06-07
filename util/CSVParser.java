@@ -49,9 +49,14 @@ public class CSVParser {
             throw new RuntimeException(e);
         }
 
-        teams = Collections.unmodifiableList(modifiableList);
+        teams = Collections.unmodifiableList(modifiableList); // Prevent the teams list from being modified
     }
 
+    /**
+     * Gets a DriveTrain enum from a cell in the teams.csv file
+     * @param csvCell The content of the cell
+     * @return The corresponding DriveTrain
+     */
     private static DriveTrain getDrivetrainFromCell(String csvCell) {
         return switch (csvCell) {
             case "swerve" -> DriveTrain.SWERVE;
@@ -61,6 +66,11 @@ public class CSVParser {
         };
     }
 
+    /**
+     * Gets a Indexer enum from a cell in the teams.csv file
+     * @param csvCell The content of the cell
+     * @return The corresponding Indexer
+     */
     private static Indexer getIndexerFromCell(String csvCell) {
         return switch (csvCell) {
             case "dye rotor" -> Indexer.DYE_ROTOR;
@@ -81,8 +91,9 @@ public class CSVParser {
      * @return The Robot object
      */
     private static Robot getRobot(String[] csvRow) {
-        if(csvRow.length < 3) return new PlaceholderBot();
+        if(csvRow.length < 3) return new PlaceholderBot(); // Lacking the information required
 
+        // Common information
         String robotTypeString = csvRow[2];
         DriveTrain driveTrain = getDrivetrainFromCell(csvRow[3]);
         int fuelCapacity = Integer.parseInt(csvRow[4]);
@@ -103,6 +114,7 @@ public class CSVParser {
             );
         }
         
+        // Common information for shooter bots
         double bps = Double.parseDouble(csvRow[8]);
         boolean adjustableHood = getBoolean(csvRow[9]);
         boolean hasFlywheel = getBoolean(csvRow[10]); 
@@ -162,6 +174,11 @@ public class CSVParser {
         };
     }
 
+    /**
+     * Parses a CSV cell and returns a boolean
+     * @param booleanStr The content of the CSV cell
+     * @return `true` if `booleanStr` starts with 't', `false` if it starts with `f`. Case-insensitive
+     */
     private static boolean getBoolean(String booleanStr) {
         String lowerStr = booleanStr.toLowerCase();
 

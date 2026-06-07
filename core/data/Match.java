@@ -3,7 +3,6 @@ package core.data;
 import java.util.ArrayList;
 
 import core.data.enums.WinningAlliance;
-import util.Algorithms;
 import util.CSVParser;
 
 public class Match {
@@ -15,6 +14,16 @@ public class Match {
     private final boolean qualifier;
     private final WinningAlliance winner;
 
+    /**
+     * Constructs a new match
+     * @param matchNumber The match number
+     * @param isQualifier Whether this match is a qualifier match
+     * @param redTeams The teams on the red alliance represented by their team number
+     * @param blueTeams The teams on the blue alliance represented by their team number
+     * @param redScore How much red alliance scored
+     * @param blueScore How much blue alliance scored
+     * @param winner The winning alliance
+     */
     public Match(int matchNumber, boolean isQualifier, ArrayList<Integer> redTeams, ArrayList<Integer> blueTeams, int redScore, int blueScore, WinningAlliance winner){
         this.matchNumber = matchNumber;
         this.redScore = redScore;
@@ -22,6 +31,7 @@ public class Match {
         this.winner = winner;
         this.qualifier = isQualifier;
 
+        // Convert the team numbers to actual team objects
         for(int teamNum : redTeams) {
             var teamOpt = CSVParser.getTeam(teamNum);
 
@@ -46,14 +56,17 @@ public class Match {
         }
     }
 
+    /** @return the match number */
     public int getMatchNumber() {
         return matchNumber;
     }
 
+    /** @return The teams on the red alliance */
     public ArrayList<Team> getRedTeams() {
         return redTeams;
     }
 
+    /** @return The teams on the blue alliance */
     public ArrayList<Team> getBlueTeams() {
         return blueTeams;
     }
@@ -82,10 +95,12 @@ public class Match {
         return ((double) blueScore) / 3;
     }
 
+    /** @return whether this is a qualifier match */
     public boolean isQualifier() {
         return qualifier;
     }
 
+    /** @return the winning alliance */
     public WinningAlliance getWinner(){
         return winner;
     }
