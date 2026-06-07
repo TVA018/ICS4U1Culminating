@@ -7,6 +7,8 @@ import data.enums.TeamType;
 import data.robot.Robot;
 import ranking.Event;
 import util.Algorithms;
+import util.TerminalTextFormatter;
+import util.TerminalTextFormatter.ANSIFlag;
 
 public class Team {
     private final String teamName;
@@ -116,6 +118,21 @@ public class Team {
 
     @Override
     public String toString() {
-        return String.valueOf(teamNum);
+        StringBuilder builder = new StringBuilder(
+            TerminalTextFormatter.applyFlags("Team " + String.valueOf(teamNum) + ": " + teamName, ANSIFlag.BOLD) + 
+            "\nEvents:\n"
+        );
+
+        if(events.size() > 0) {
+            for (Event event : events) {
+                builder.append("- " + event.getName() + "\n");
+            }
+        } else {
+            builder.append("- None\n");
+        }
+
+        builder.append(robot.toString());
+
+        return builder.toString();
     }
 }

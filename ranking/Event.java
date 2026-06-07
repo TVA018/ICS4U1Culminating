@@ -96,4 +96,9 @@ public class Event extends Rankable {
     public List<Ranking> getRankings() {
         return rankingScores;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -1,6 +1,8 @@
 package data.robot;
 
 import data.robot.enums.DriveTrain;
+import util.TerminalTextFormatter;
+import util.TerminalTextFormatter.ANSIFlag;
 
 public abstract class Robot {
     protected DriveTrain driveTrain;
@@ -52,5 +54,33 @@ public abstract class Robot {
      */
     public boolean canDoBump(){
         return bump;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder
+            .append(TerminalTextFormatter.applyFlags(getClass().getSimpleName() + ":", ANSIFlag.ITALIC) + "\n")
+            .append("- GENERAL\n")
+            .append(" > Drivetrain: " + driveTrain.toString() + "\n");
+
+        if(extendoHopper) builder.append(" > Has Extendo-Hopper\n");
+        
+        builder.append(" > Can Traverse ");
+
+        if(bump) {
+            if(trench) {
+                builder.append("Bump and Trench");
+            } else {
+                builder.append("Bump Only");
+            }
+        } else if(trench) {
+            builder.append("Trench Only");
+        } else {
+            builder.append("nothing");
+        }
+
+        return builder.toString();
     }
 }
