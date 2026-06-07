@@ -52,12 +52,12 @@ public final class Menus {
             }
 
             int eventIndex = SCANNER.readInput("> ", stringInput -> {
-                int choice = Integer.parseInt(stringInput) - 1;
+                int choice = Integer.parseInt(stringInput);
 
                 if(choice < 1) throw new RuntimeException("Minimum value: 1");
                 if(choice > events.size()) throw new RuntimeException("Maximum value: " + String.valueOf(events.size()));
 
-                return choice;
+                return choice - 1;
             });
 
             return Optional.of(events.get(eventIndex));
