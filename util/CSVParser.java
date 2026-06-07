@@ -52,6 +52,28 @@ public class CSVParser {
         teams = Collections.unmodifiableList(modifiableList);
     }
 
+    private static DriveTrain getDrivetrainFromCell(String csvCell) {
+        return switch (csvCell) {
+            case "swerve" -> DriveTrain.SWERVE;
+            case "tank" -> DriveTrain.TANK;
+            case "mecanum" -> DriveTrain.MECANUM;
+            default -> throw new RuntimeException(csvCell + " is not a valid Drivetrain String");
+        };
+    }
+
+    private static Indexer getIndexerFromCell(String csvCell) {
+        return switch (csvCell) {
+            case "dye rotor" -> Indexer.DYE_ROTOR;
+            case "double dye rotor" -> Indexer.DOUBLE_DYE_ROTOR;
+            case "roller floor" -> Indexer.ROLLER_FLOOR;
+            case "belt floor" -> Indexer.BELT_FLOOR;
+            case "spindexer" -> Indexer.SPINDEXER;
+            case "double spindexer" -> Indexer.DOUBLE_SPINDEXER;
+            case "none" -> Indexer.NONE;
+            default -> throw new RuntimeException(csvCell + " is not a valid Indexer String");
+        };
+    }
+
     /**
      * Parses a CSV row from teams.csv, and returns the corresponding Robot object
      * 
@@ -62,7 +84,7 @@ public class CSVParser {
         if(csvRow.length < 3) return new PlaceholderBot();
 
         String robotTypeString = csvRow[2];
-        DriveTrain driveTrain = DriveTrain.fromString(csvRow[3]);
+        DriveTrain driveTrain = getDrivetrainFromCell(csvRow[3]);
         int fuelCapacity = Integer.parseInt(csvRow[4]);
         boolean extendoHopper = getBoolean(csvRow[5]);
         boolean trench = getBoolean(csvRow[6]);
@@ -84,7 +106,7 @@ public class CSVParser {
         double bps = Double.parseDouble(csvRow[8]);
         boolean adjustableHood = getBoolean(csvRow[9]);
         boolean hasFlywheel = getBoolean(csvRow[10]); 
-        Indexer indexer = Indexer.fromString(csvRow[11]); 
+        Indexer indexer = getIndexerFromCell(csvRow[11]); 
         boolean canPass = getBoolean(csvRow[12]); 
         boolean canAutoAim = getBoolean(csvRow[13]); 
 

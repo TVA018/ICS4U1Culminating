@@ -1,24 +1,22 @@
 package data.robot.enums;
 
 public enum Indexer {
-    DYE_ROTOR,
-    DOUBLE_DYE_ROTOR,
-    ROLLER_FLOOR,
-    BELT_FLOOR,
-    SPINDEXER,
-    DOUBLE_SPINDEXER,
-    NONE;
+    DYE_ROTOR("Dye Rotor"),
+    DOUBLE_DYE_ROTOR("Double Dye Rotor"),
+    ROLLER_FLOOR("Roller Floor"),
+    BELT_FLOOR("Belt Floor"),
+    SPINDEXER("Spindexer"),
+    DOUBLE_SPINDEXER("Double Spindexer"),
+    NONE("None");
 
-    public static Indexer fromString(String string) {
-        return switch (string) {
-            case "dye rotor" -> Indexer.DYE_ROTOR;
-            case "double dye rotor" -> Indexer.DOUBLE_DYE_ROTOR;
-            case "roller floor" -> Indexer.ROLLER_FLOOR;
-            case "belt floor" -> Indexer.BELT_FLOOR;
-            case "spindexer" -> Indexer.SPINDEXER;
-            case "double spindexer" -> Indexer.DOUBLE_SPINDEXER;
-            case "none" -> Indexer.NONE;
-            default -> throw new RuntimeException(string + " is not a valid Indexer String");
-        };
+    private final String name;
+
+    private Indexer(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
