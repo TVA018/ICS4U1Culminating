@@ -1,5 +1,5 @@
-import tba.APIFetcher;
-import tui.TUICore;
+import core.tba.APIFetcher;
+import core.tui.TUICore;
 
 public class Main {
     public static void main(String[] args) {

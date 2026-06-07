@@ -9,16 +9,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import data.Team;
-import data.robot.DefenceBot;
-import data.robot.DrumBot;
-import data.robot.LaneShooterBot;
-import data.robot.PlaceholderBot;
-import data.robot.Robot;
-import data.robot.TurretBot;
-import data.robot.enums.DriveTrain;
-import data.robot.enums.Indexer;
-import tba.Conversions;
+import core.data.Team;
+import core.data.robot.DefenceBot;
+import core.data.robot.DrumBot;
+import core.data.robot.LaneShooterBot;
+import core.data.robot.PlaceholderBot;
+import core.data.robot.Robot;
+import core.data.robot.TurretBot;
+import core.data.robot.enums.DriveTrain;
+import core.data.robot.enums.Indexer;
+import core.tba.Conversions;
 
 /** A helper class to parse teams.csv */
 public class CSVParser {
