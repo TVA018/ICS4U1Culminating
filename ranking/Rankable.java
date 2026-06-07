@@ -21,7 +21,7 @@ public abstract class Rankable {
 
 
         if(onlyIncludeShooters){
-            validTeams = Algorithms.filter(allTeams, team -> (team.getRobot() instanceof DefenceBot));
+            validTeams = Algorithms.filter(allTeams, team -> !(team.getRobot() instanceof DefenceBot));
         } else {
             validTeams = allTeams;
         }
