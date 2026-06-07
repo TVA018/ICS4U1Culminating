@@ -2,13 +2,10 @@ package ranking;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 import data.Ranking;
 import data.Team;
-import tba.Conversions;
 import util.Algorithms;
-import util.ComparatorFactory;
 
 public class District extends Rankable {
     private final List<Event> events;

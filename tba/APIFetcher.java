@@ -37,9 +37,9 @@ public final class APIFetcher {
     public static District ONT_DISTRICT = null;
 
     public static void start() {
-        if(ONT_DISTRICT != null) return;
+        if(ONT_DISTRICT != null) return; // Prevent this function from fetching twice
 
-        ONT_DISTRICT = getDistrict("2026ont");
+        ONT_DISTRICT = getDistrict("2026ont"); // Fetch the ontario district
     }
 
     /**
@@ -131,6 +131,11 @@ public final class APIFetcher {
         return matches;
     }
 
+    /**
+     * Fetches the given event. This DOES NOT add the event to the team automatically.
+     * @param eventKey The key of the event
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static Event getEvent(String eventKey) {
         TerminalTextFormatter.println("Loading event " + eventKey, ANSIFlag.YELLOW_TEXT, ANSIFlag.ITALIC);
@@ -153,7 +158,7 @@ public final class APIFetcher {
         Date date = Date.valueOf(startDateStr);
 
         TerminalTextFormatter.println("Creating Event object...", ANSIFlag.YELLOW_TEXT);
-        Event event = new Event(eventName, date, matches, teamNumbers, rankings, districtPointsMap);
+        Event event = new Event(eventKey, eventName, date, matches, teamNumbers, rankings, districtPointsMap);
 
         for(int teamNumber : teamNumbers) {
             var teamOpt = Algorithms.binarySearch(CSVParser.getTeams(), ComparatorFactory.ascendingSearchComparator(teamNumber, Team::getTeamNum));
@@ -204,13 +209,6 @@ public final class APIFetcher {
         }
 
         return events;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Map<String, Map<String, Integer>> getEventDistrictPoints(String eventKey) {
-        Object json = fetch("/event/" + eventKey + "/district_points");
-
-        return (Map<String, Map<String, Integer>>) json;
     }
 
     public static District getDistrict(String districtKey) {

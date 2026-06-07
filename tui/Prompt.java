@@ -33,7 +33,7 @@ public final class Prompt {
         }
 
         // Read user input
-        int optionIndex = Menus.SCANNER.readInput("> ", optionParser) - 1;
+        int optionIndex = TUICore.SCANNER.readInput("> ", optionParser) - 1;
         PromptOption optionChosen = options[optionIndex];
 
         return optionChosen.callback().exec();

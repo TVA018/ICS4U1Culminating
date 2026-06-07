@@ -16,6 +16,7 @@ import util.ComparatorFactory;
 
 /** Represents an event */
 public class Event extends Rankable {
+    private final String key;
     private final String name;
     private final Date startDate;
     private final List<Match> matches; // The matches in this event
@@ -26,13 +27,15 @@ public class Event extends Rankable {
 
     @SuppressWarnings("unchecked")
     public Event(
-        String name, 
+        String eventKey,
+        String name,
         Date startDate, 
         List<Match> matches, 
         List<Integer> teamNumbers, 
         List<HashMap<String, Object>> rankingScoresJson,
         Map<String, Map<String, Integer>> districtPointsMap
     ){
+        this.key = eventKey;
         this.name = name;
         this.startDate = startDate;
         this.matches = matches;
@@ -74,6 +77,10 @@ public class Event extends Rankable {
 
             teamDistrictPoints.put(team, districtPoints);
         }
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getName() {

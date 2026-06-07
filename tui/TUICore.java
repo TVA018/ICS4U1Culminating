@@ -19,15 +19,15 @@ import util.TerminalTextFormatter.ANSIFlag;
 import util.ValidatedScanner.StringInputParser;
 import util.ValidatedScanner;
 
-public final class Menus {
-    private Menus() {}
+public final class TUICore {
+    private TUICore() {}
 
     private static final StringInputParser<Integer> BASIC_INT_PARSER = stringInput -> Integer.parseInt(stringInput);
     private static final StringInputParser<Boolean> BASIC_BOOL_PARSER = stringInput -> {
-        if(stringInput.equalsIgnoreCase("t")) return true;
-        if(stringInput.equalsIgnoreCase("f")) return false;
+        if(stringInput.equalsIgnoreCase("y")) return true;
+        if(stringInput.equalsIgnoreCase("n")) return false;
 
-        throw new RuntimeException("Input must be 't' or 'f'");
+        throw new RuntimeException("Input must be 'y' or 'n'");
     };
     public static final ValidatedScanner SCANNER = new ValidatedScanner();
 
@@ -44,7 +44,7 @@ public final class Menus {
     }
 
     private static Optional<Event> getEvent() {
-        int searchType = SCANNER.readInput("Search type (0: By index, 1: By name)\n> ", stringInput -> {
+        int searchType = SCANNER.readInput("Search type (0: By index, 1: By name/key)\n> ", stringInput -> {
             int choice = Integer.parseInt(stringInput);
 
             if(choice != 0 && choice != 1) throw new RuntimeException("The input must be a 0 or 1");
@@ -70,10 +70,13 @@ public final class Menus {
 
             return Optional.of(events.get(eventIndex));
         } else { // Fuzzy name search
-            String eventPartialName = SCANNER.readLine("Enter the name of the event (partial names accepted)\n> ");
+            String eventPartialName = SCANNER.readLine("Enter the name or key of the event (partial names accepted)\n> ");
             Pattern pattern = Pattern.compile(eventPartialName, Pattern.CASE_INSENSITIVE);
 
-            return Algorithms.linearSearch(events, event -> pattern.matcher(event.getName()).find());
+            return Algorithms.linearSearch(
+                events, 
+                event -> pattern.matcher(event.getKey()).find() || pattern.matcher(event.getName()).find()
+            );
         }
     }
 
@@ -127,7 +130,7 @@ public final class Menus {
             }),
             new PromptOption("Event Rankings", () -> printRankings(event.getRankings(), "RANKING SCORE")),
             new PromptOption("MAD Rankings", () -> {
-                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots?\n> ", BASIC_BOOL_PARSER);
+                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots? (y/n)\n> ", BASIC_BOOL_PARSER);
                 return printRankings(event.getMADRankings(Constants.MAD_FACTOR, onlyIncludeShooters), "MAD");
             }),
             new PromptOption("Return", () -> 0)
@@ -148,7 +151,7 @@ public final class Menus {
         }),
         new PromptOption("District Rankings", () -> printRankings(APIFetcher.ONT_DISTRICT.getRankings(), "DISTRICT POINTS")),
         new PromptOption("MAD Rankings", () -> {
-                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots?\n> ", BASIC_BOOL_PARSER);
+                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots? (y/n)\n> ", BASIC_BOOL_PARSER);
                 return printRankings(APIFetcher.ONT_DISTRICT.getMADRankings(Constants.MAD_FACTOR, onlyIncludeShooters), "MAD");
         }),
         new PromptOption("Return", () -> 0)
@@ -196,7 +199,7 @@ public final class Menus {
     public static final Prompt MAIN_MENU = new Prompt(
         "--[MADStrat]--",
         new PromptOption("District", createMainMenuOption(DISTRICT_PROMPT)),
-        new PromptOption("Event", Menus::eventMenu),
+        new PromptOption("Event", TUICore::eventMenu),
         new PromptOption("Team", createMainMenuOption(TEAM_PROMPT)),
         new PromptOption("Exit", () -> 0)
     );

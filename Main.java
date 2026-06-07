@@ -1,10 +1,12 @@
 import tba.APIFetcher;
-import tui.Menus;
+import tui.TUICore;
 
 public class Main {
     public static void main(String[] args) {
-        APIFetcher.start();
+        APIFetcher.start(); // Fetch information from TBA
 
-        while (Menus.MAIN_MENU.exec() > 0) {}
+        while (TUICore.MAIN_MENU.exec() > 0) {} // Run the menu until stopped
+
+        System.out.println("Thank you for using MADStrat, see you next time!");
     }
 }
