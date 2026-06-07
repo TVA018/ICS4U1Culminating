@@ -5,13 +5,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import data.Constants;
+import data.Ranking;
 import data.Team;
-import ranking.District;
 import ranking.Event;
 import tba.APIFetcher;
 import util.Algorithms;
 import util.CSVParser;
 import util.ComparatorFactory;
+import util.OutputFormatter;
 import util.TerminalTextFormatter;
 import util.TerminalTextFormatter.ANSIFlag;
 import util.ValidatedScanner.StringInputParser;
@@ -21,6 +23,12 @@ public final class Menus {
     private Menus() {}
 
     private static final StringInputParser<Integer> BASIC_INT_PARSER = stringInput -> Integer.parseInt(stringInput);
+    private static final StringInputParser<Boolean> BASIC_BOOL_PARSER = stringInput -> {
+        if(stringInput.equalsIgnoreCase("t")) return true;
+        if(stringInput.equalsIgnoreCase("f")) return false;
+
+        throw new RuntimeException("Input must be 't' or 'f'");
+    };
     public static final ValidatedScanner SCANNER = new ValidatedScanner();
 
     private static PromptOptionCallback createMainMenuOption(Prompt submenu) {
@@ -69,6 +77,32 @@ public final class Menus {
         }
     }
 
+    private static int printRankings(List<Ranking> rankings, String pointsName) {
+        int currentRank = 1;
+        String[][] table = new String[rankings.size() + 1][4];
+
+        table[0][0] = "Rank";
+        table[0][1] = "Team";
+        table[0][2] = "Archetype";
+        table[0][3] = pointsName;
+
+        for(Ranking ranking : rankings) {
+            String[] row = table[currentRank];
+            Team team = ranking.getTeam();
+
+            row[0] = String.valueOf(currentRank);
+            row[1] = team.asNameLabel();
+            row[2] = team.getRobot().getClass().getSimpleName();
+            row[3] = String.format("%.2f", ranking.getPoints());
+
+            currentRank++;
+        }
+
+        System.out.println(OutputFormatter.generateTable(table));
+
+        return 1; // Used for menu
+    }
+
     private static int eventMenu() {
         // Get event
         Optional<Event> eventOpt = getEvent();
@@ -91,7 +125,11 @@ public final class Menus {
 
                 return 1;
             }),
-            new PromptOption("", null),
+            new PromptOption("Event Rankings", () -> printRankings(event.getRankings(), "RANKING SCORE")),
+            new PromptOption("MAD Rankings", () -> {
+                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots?\n> ", BASIC_BOOL_PARSER);
+                return printRankings(event.getMADRankings(Constants.MAD_FACTOR, onlyIncludeShooters), "MAD");
+            }),
             new PromptOption("Return", () -> 0)
         );
 
@@ -107,6 +145,11 @@ public final class Menus {
             }
             
             return 1;
+        }),
+        new PromptOption("District Rankings", () -> printRankings(APIFetcher.ONT_DISTRICT.getRankings(), "DISTRICT POINTS")),
+        new PromptOption("MAD Rankings", () -> {
+                boolean onlyIncludeShooters = SCANNER.readInput("Only include shooter robots?\n> ", BASIC_BOOL_PARSER);
+                return printRankings(APIFetcher.ONT_DISTRICT.getMADRankings(Constants.MAD_FACTOR, onlyIncludeShooters), "MAD");
         }),
         new PromptOption("Return", () -> 0)
     );

@@ -75,7 +75,7 @@ public class District extends Rankable {
             districtRankings.add(new Ranking(entry.getKey(), entry.getValue()));
         }
 
-        Algorithms.mergeSort(districtRankings, (r1, r2) -> (int) r1.getPoints() - (int) r2.getPoints());
+        Algorithms.mergeSort(districtRankings, (r1, r2) -> (int) r2.getPoints() - (int) r1.getPoints());
     }
 
     public List<Event> getEvents() {

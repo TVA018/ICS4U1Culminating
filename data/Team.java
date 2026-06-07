@@ -120,13 +120,17 @@ public class Team {
         return ((double) totalPoints) / validMatches.size();
     }
 
+    public String asNameLabel() {
+        return String.valueOf(teamNum) + ": " + teamName;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(
             TerminalTextFormatter.applyFlags("Team " + String.valueOf(teamNum) + ": " + teamName, ANSIFlag.BOLD) +
-            "\nAverage Match Points: " + String.valueOf(calculateAverageMatchPoints()) +
-            "\nMAD: " + String.valueOf(calculateMAD(Constants.MAD_FACTOR)) +
-            "\nEvents:\n"
+            "\nAverage Match Points: " + String.format("%.2f", calculateAverageMatchPoints()) +
+            "\nMAD: " + String.format("%.2f", calculateMAD(Constants.MAD_FACTOR)) +
+            "\n\nEvents:\n"
         );
 
         if(events.size() > 0) {
@@ -137,7 +141,7 @@ public class Team {
             builder.append("- None\n");
         }
 
-        builder.append(robot.toString());
+        builder.append("\n" + robot.toString());
 
         return builder.toString();
     }
