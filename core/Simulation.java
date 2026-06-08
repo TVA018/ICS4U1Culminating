@@ -78,9 +78,9 @@ public class Simulation {
             Algorithms.mergeSort(teamNumbers, (t1, t2) -> t1 - t2);
 
             // Read remaining rows (match info)
-            List<String> matchRows = reader.readAllLines();
+            String row = reader.readLine();
 
-            for(String row : matchRows) {
+            while(row != null) {
                 String[] allTeamNums = row.split(",", 6); // List of teams, first 3 are red alliance, last 3 are blue alliance
                 ArrayList<Integer> redTeams = new ArrayList<>(3);
                 ArrayList<Integer> blueTeams = new ArrayList<>(3);
@@ -96,6 +96,8 @@ public class Simulation {
 
                 // Add the config
                 matchConfigs.add(new MatchConfig(redTeams, blueTeams));
+
+                row = reader.readLine();
             }
         }
     }

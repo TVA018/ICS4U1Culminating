@@ -303,7 +303,7 @@ public final class TUICore {
         Simulation simulator;
 
         try {
-            simulator = new Simulation(SCANNER.readLine("File Name: "));
+            simulator = new Simulation(SCANNER.readLine("File Path: "));
         } catch (Exception e) {
             e.printStackTrace();
             return 1;
