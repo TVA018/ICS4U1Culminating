@@ -347,7 +347,7 @@
 1102;M'Aiken Magic
 1108;Panther Robotics
 1111;Power Hawks Robotics
-1114;Simbotics
+1114;Simbotics;drum;swerve;75;t;f;t;25;t;t;roller floor;t;t;3
 1119;Pup Cups
 1126;SPARX
 1138;Eagle Engineering
@@ -388,7 +388,7 @@
 1294;Pack of Parts
 1296;Full Metal Jackets
 1303;WYOHAZARD
-1305;Ice Cubed
+1305;Ice Cubed;drum;swerve;45;t;t;t;15;t;t;roller floor;t;t;4
 1306;BadgerBOTS
 1307;Robosaints
 1308;Wildcat Robotics
@@ -398,14 +398,14 @@
 1319;Flash
 1322;GRAYT Leviathons (Genesee Robotics Area Youth Team)
 1323;MadTown Robotics
-1325;Inverse Paradox
+1325;Inverse Paradox;turret;swerve;60;t;t;t;8;t;f;spindexer;t;t;1;300;t
 1329;The ViPrs
 1334;OT Devils
 1339;Angelbotics
 1350;The Rambots
 1351;TKO
 1359;Scalawags
-1360;Orbit Robotics
+1360;Orbit Robotics;turret;swerve;30;t;t;t;6;t;f;roller floor;t;t;1;180;t
 1369;Minotaur
 1388;Eagle Robotics
 1389;The Body Electric
@@ -600,7 +600,7 @@
 2052;KnightKrawler
 2053;Southern Tier Robotics
 2054;Tech Vikes
-2056;OP Robotics
+2056;OP Robotics;turret;swerve;60;t;t;t;11;t;f;roller floor;t;t;1;250;t
 2059;The Hitchhikers
 2062;CORE 2062
 2064;The Panther Project
@@ -646,7 +646,7 @@
 2194;Fondy Fire
 2197;Las Pumas
 2199;Robo-Lions
-2200;BCR Blackout
+2200;BCR Blackout;drum;swerve;75;t;f;t;25;t;t;roller floor;t;t;4
 2202;BEAST Robotics
 2204;Rambots
 2207;Bright Bears
@@ -944,7 +944,7 @@
 3147;Munster Horsepower
 3158;PrepaTec - TECBOT
 3160;F. R. O. G. - FIRST Robotics Organization of Grove
-3161;Tronic Titans
+3161;Tronic Titans;turret;swerve;40;t;t;t;7;t;f;roller floor;t;t;1;180;t
 3163;ROARBOTS
 3164;Stealth Tigers
 3166;Rooks
@@ -1371,7 +1371,7 @@
 4470;TiGears
 4472;SuperNOVA
 4473;Delta Prime Robotics 4-H
-4476;W.A.F.F.L.E.S.
+4476;W.A.F.F.L.E.S.;turret;swerve;100;t;f;t;6;t;f;roller floor;t;t;1;200;t
 4480;UC-Botics
 4481;Team Rembrandts
 4485;Tribe Tech Robotics
@@ -2384,7 +2384,7 @@
 7514;EVE Robotics
 7515;Dark Side Robotics
 7516;Louisville Centrons
-7520;Team MineKee
+7520;Team MineKee;turret;swerve;34;t;t;t;7;t;f;roller floor;t;t;1;200;t
 7521;ULTIMATE Robotics
 7525;Pioneers
 7528;Nuts and Bolts
