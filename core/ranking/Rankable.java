@@ -6,6 +6,7 @@ import java.util.List;
 import core.data.Ranking;
 import core.data.Team;
 import core.data.robot.DefenceBot;
+import core.data.robot.ShooterBot;
 import util.Algorithms;
 
 public abstract class Rankable {
@@ -21,9 +22,8 @@ public abstract class Rankable {
         List<Team> allTeams = getTeams();
         List<Team> validTeams;
 
-
         if(onlyIncludeShooters){
-            validTeams = Algorithms.filter(allTeams, team -> (team.getRobot() instanceof DefenceBot));
+            validTeams = Algorithms.filter(allTeams, team -> (team.getRobot() instanceof ShooterBot));
         } else {
             validTeams = allTeams;
         }
