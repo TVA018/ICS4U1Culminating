@@ -35,13 +35,18 @@ public class CSVParser {
             while (currentLine != null) {
                 String[] cells = currentLine.split(SEPARATOR);
 
-                Team team = new Team(
-                    cells[1], 
-                    Integer.parseInt(cells[0]), 
-                    getRobot(cells)
-                );
+                try {
+                    Team team = new Team(
+                        cells[1], 
+                        Integer.parseInt(cells[0]), 
+                        getRobot(cells)
+                    );
 
-                modifiableList.add(team);
+                    modifiableList.add(team);
+                } catch (Exception e) {
+                    System.out.println(Arrays.toString(cells));
+                    throw new RuntimeException(e);
+                }
 
                 currentLine = reader.readLine();
             }
@@ -102,7 +107,7 @@ public class CSVParser {
         boolean bump = getBoolean(csvRow[7]);
 
         if(robotTypeString.equals("defence")) {
-            boolean shotBlocker = getBoolean(csvRow[9]);
+            boolean shotBlocker = getBoolean(csvRow[8]);
 
             return new DefenceBot(
                 driveTrain, 

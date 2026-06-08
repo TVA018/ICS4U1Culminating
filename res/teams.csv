@@ -301,7 +301,7 @@
 900;The Zebracorns
 904;D Cubed
 910;The Foley Freeze
-919;PANTHERA TIGRIS
+919;PANTHERA TIGRIS;lane fixed;swerve;20;f;t;t;3;f;f;none;f;f;2
 930;Mukwonago BEARs
 931;Perpetual Chaos
 935;RaileRobotics
@@ -400,7 +400,7 @@
 1323;MadTown Robotics
 1325;Inverse Paradox;turret;swerve;60;t;t;t;8;t;f;spindexer;t;t;1;300;t
 1329;The ViPrs
-1334;OT Devils
+1334;OT Devils;lane fixed;swerve;65;t;f;t;6;t;f;belt floor;t;t;3
 1339;Angelbotics
 1350;The Rambots
 1351;TKO
@@ -693,7 +693,7 @@
 2375;Dragon Robotics
 2377;C Company
 2383;Ninjineers
-2386;Trojans
+2386;Trojans;lane fixed;swerve;35;t;t;t;4;f;f;belt floor;f;f;2
 2393;Robotichauns
 2399;The Fighting Unicorns
 2403;Plasma Robotics
@@ -803,8 +803,8 @@
 2689;Team Alpha
 2702;Rebels
 2704;Roaring Robotics
-2706;Merge Robotics
-2708;Lake Effect Robotics
+2706;Merge Robotics;lane fixed;swerve;35;t;t;t;4;f;f;spindexer;f;f;1
+2708;Lake Effect Robotics;drum;swerve;35;t;t;t;6;f;f;roller floor;f;f;2
 2710;JetStream
 2712;Power Surge 4-H Robotics
 2713;Red Hawk Robotics
@@ -1076,7 +1076,7 @@
 3545;Bots in Blue
 3550;Robotronix
 3559;Thundercats
-3560;MechaWolves
+3560;MechaWolves;drum;swerve;35;t;t;t;4;f;f;belt floor;f;f;3
 3561;RoboRaiders
 3566;Gone Fishin'
 3568;Linden RoboEagles
@@ -1144,7 +1144,7 @@
 3749;Team Optix
 3751;Tower View Robotics
 3753;BulahBots!
-3756;RamFerno
+3756;RamFerno;defence;swerve;30;t;t;t;f
 3759;SMARTBOTS
 3760;Robo Raccoons
 3767;TC Titans
@@ -1232,7 +1232,7 @@
 4063;TriKzR4Kidz
 4065;Nerds of Prey
 4068;Bearbotics
-4069;Lo-Ellen Robotics
+4069;Lo-Ellen Robotics;drum;swerve;50;t;t;t;8;t;f;roller floor;t;t;3
 4076;Texan Robotics
 4079;Quantum Leap
 4083;The Legendary Iron Wolverines
@@ -1313,7 +1313,7 @@
 4296;Trident Robotics
 4299;BCS RoboSharks
 4306;Robokomodos
-4308;ABSOLUTE ROBOTICS
+4308;ABSOLUTE ROBOTICS;turret;swerve;40;t;t;t;3;t;f;none;t;t;1;180;f
 4311;Swampscott Currents
 4314;Springfield Urban League Abe-Ro-Bots
 4319;Ladies FIRST
@@ -1514,7 +1514,7 @@
 4915;Spartronics
 4917;Sir Lancerbot
 4919;Team Ronin
-4920;Belle River Boltheads
+4920;Belle River Boltheads;drum;swerve;40;t;t;t;3;t;f;none;t;t;3
 4925;The Resistance
 4926;GalacTech
 4930;Electric Mayhem
@@ -1558,7 +1558,7 @@
 5027;Event Horizon (5027)
 5031;Full Metal Mustangs
 5032;The Falcons
-5036;The Robo Devils
+5036;The Robo Devils;lane fixed;swerve;30;t;t;t;1;t;f;none;f;f;1
 5041;CyBears
 5045;SpartaBot
 5046;Jacked Up Jackets
@@ -1667,7 +1667,7 @@
 5406;Celt-X
 5407;Wolfpack Robotics
 5408;Kennedy Kinetics
-5409;Chargers
+5409;Chargers;lane fixed;swerve;70;t;f;t;6;t;f;belt floor;t;t;3
 5410;Eaglebotics
 5411;RoboTalons
 5413;Stellar Robotics
@@ -1780,7 +1780,7 @@
 5665;FENERBAH\u00c7E DOGUS SPARC
 5667;The Digital Eagles
 5669;Techmen
-5672;First Nations-STEM
+5672;First Nations-STEM;defence;swerve;35;f;t;t;f
 5674;The Gearhounds
 5675;WiredCats
 5676;The H.E.R.O.E.S
@@ -1788,7 +1788,7 @@
 5683;R.A.V.E.N.
 5684;Titans of Tech
 5687;The Outliers
-5689;CK Cyber Pack
+5689;CK Cyber Pack;defence;tank;20;f;t;t;f
 5690;SubZero Robotics
 5695;Heavy Duty Eagles
 5697;Bearcats
@@ -2225,7 +2225,7 @@
 6964;BearBots (FRC)
 6969;Cyborgs6969
 6974;Zia Robotics
-6975;The Neil McNeil Brotherhood Bots
+6975;The Neil McNeil Brotherhood Bots;defence;swerve;30;t;t;t;f
 6978;QuickStrike Niagara
 6981;Clockwork Concord
 6985;ENKA TECH
@@ -2303,7 +2303,7 @@
 7196;Tech Tigers
 7197;Mountie Megabots
 7198;Fearsome Gears
-7200;Banting Robotics
+7200;Banting Robotics;turret;swerve;35;t;t;t;6;t;f;roller floor;t;t;1;170;f
 7201;Crobotics
 7202;Cyber Orioles
 7203;Cyber Bearcats
@@ -2366,7 +2366,7 @@
 7471;Robo Montagnards
 7472;R2JESU Robotics
 7474;JXN United
-7476;Spongebotics
+7476;Spongebotics;drum;swerve;30;t;t;t;5;f;t;roller floor;f;t;3
 7477;Giddy GOATS
 7479;Cardinal Robotics
 7480;Machine Mavericks
@@ -2431,7 +2431,7 @@
 7656;MC Hammers
 7657;Thunderbots
 7658;MagiTech
-7659;HNMCS Robotics
+7659;HNMCS Robotics;defence;swerve;20;f;t;t;f
 7660;The Byting Irish
 7667;OtterBots
 7668;GatorBots
@@ -2461,7 +2461,7 @@
 7742;Cosmos Robot Works
 7748;TECHTOLIA ROBOTICS
 7755;Phantom Circuits
-7757;Atomic Dishwashers
+7757;Atomic Dishwashers;defence;tank;15;f;f;t;f
 7758;MEVOLUTION
 7759;Bulldog Bytes
 7760;Griffin Innovations
@@ -2932,7 +2932,7 @@
 9252;Wingspan
 9255;Botmasterz
 9262;Humberside Huskies
-9263;ALD Lions
+9263;ALD Lions;turret;swerve;25;t;t;t;6;t;t;spindexer;t;t;1;180;t
 9264;HUNTERS ROBOTICS
 9271;Cyber Porpoises
 9277;Sparkans
@@ -3056,7 +3056,7 @@
 9558;The Steel Vipers
 9559;EagleTron
 9561;Dawson Dinos
-9562;Royal Robotics
+9562;Royal Robotics;lane fixed;swerve;45;t;t;t;9;t;t;dye rotor;t;t;1;180;f
 9566;Red Storm Rookies
 9567;StormBreakers
 9568;AstroBots
@@ -3065,7 +3065,7 @@
 9572;CC Shambytes
 9573;MarauderTech
 9574;Rock Bots
-9575;Silver Robotics
+9575;Silver Robotics;defence;swerve;12;f;t;t;f
 9577;Recoil
 9578;Player One
 9579;Tech Devils
@@ -3207,7 +3207,7 @@
 10004;SCAROB (Star City Area Robotics)
 10011;Gridrunners
 10014;REBELLION
-10015;Bubbles
+10015;Bubbles;lane fixed;swerve;70;t;f;t;20;t;t;belt floor;t;t;3
 10016;Absolute Zero
 10017;GPS Robotics
 10019;SESI SENAI MINERSKILLS
@@ -3589,7 +3589,7 @@
 11223;The Whistlepunks
 11224;Azreal
 11225;Wolfimus
-11227;Goose Goose Duck
+11227;Goose Goose Duck;lane fixed;swerve;70;t;f;t;10;f;t;belt floor;t;t;4
 11229;Open Circuit
 11230;White Hat Hackers
 11235;Golden Ratio
@@ -3684,7 +3684,7 @@
 11423;Team IIA
 11424;Boa Constructors
 11425;Byteforge
-11428;Horns of Steel
+11428;Horns of Steel;drum;tank;16;f;t;t;5;f;f;none;f;f;3
 11429;NEW AI
 11431;TechnoTigers
 11435;St. Peter's High School RaiderBots
